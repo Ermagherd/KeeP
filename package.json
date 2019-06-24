@@ -1,0 +1,19 @@
+{
+  "name": "keep",
+  "version": "1.0.0",
+  "description": "social network app",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ermagherd/KeeP.git"
+  },
+  "author": "Pierre Fouché",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ermagherd/KeeP/issues"
+  },
+  "homepage": "https://github.com/Ermagherd/KeeP#readme"
+}
