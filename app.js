@@ -7,13 +7,13 @@
 // #       #  #  #      #   #  #      #    # #    #
 // ###### #    # #      #    # ######  ####   ####
 
-
-const express = require('express');
-const app = express();
-const http = require('http').Server(app);
+const express  = require('express');
+const app      = express();
+const http     = require('http').Server(app);
+const routes   = require('./routes');
 const mongoose = require('mongoose');
-const conf = require("./secrets/conf.js");
-const session = require('express-session');
+const conf     = require("./secrets/conf.js");
+const session  = require('express-session');
 
 mongoose.connect(conf.mongo, {useNewUrlParser: true});
 
@@ -24,12 +24,12 @@ mongoose.connect(conf.mongo, {useNewUrlParser: true});
 // #    #   #   #    #   #   # #    #
 //  ####    #   #    #   #   #  ####
 
-
 app.use('/www', express.static(__dirname + '/bin/www'));
 app.use('/img', express.static(__dirname + '/public/img'));
 app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/vendor', express.static(__dirname + '/public/vendor'));
+app.use('/', routes);
 
 // #####   ####  #    # ##### ######  ####
 // #    # #    # #    #   #   #      #
@@ -38,10 +38,10 @@ app.use('/vendor', express.static(__dirname + '/public/vendor'));
 // #   #  #    # #    #   #   #      #    #
 // #    #  ####   ####    #   ######  ####
 
-
-app.get('/', function(req, res, next){
+router.get('/', function(req, res, next){
   res.send("we're in boys ");
-})
+});
+
 
 // ###### #####  #####   ####  #####   ####
 // #      #    # #    # #    # #    # #
@@ -49,7 +49,6 @@ app.get('/', function(req, res, next){
 // #      #####  #####  #    # #####       #
 // #      #   #  #   #  #    # #   #  #    #
 // ###### #    # #    #  ####  #    #  ####
-
 
 app.use(function(req,res,next){
   // test l'entête de la réponse
