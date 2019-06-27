@@ -10,12 +10,16 @@
 const express  = require('express');
 const app      = express();
 const http     = require('http').Server(app);
+const PORT     = process.env.PORT || 8080;
 const routes   = require('./routes');
 const mongoose = require('mongoose');
 const conf     = require("./secrets/conf.js");
+const pug      = require('pug');
 const session  = require('express-session');
 
-mongoose.connect(conf.mongo, {useNewUrlParser: true});
+mongoose.connect(conf.mongoDB, {useNewUrlParser: true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // ####  #####   ##   ##### #  ####
 // #        #    #  #    #   # #    #
@@ -29,6 +33,8 @@ app.use('/img', express.static(__dirname + '/public/img'));
 app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/vendor', express.static(__dirname + '/public/vendor'));
+
+app.set('view engine', 'pug');
 
 // #####   ####  #    # ##### ######  ####
 // #    # #    # #    #   #   #      #
@@ -52,7 +58,7 @@ app.use(function(req,res,next){
     res.send('Accès non autorisé')
   } else {
     // si erreur par défaut : status passé à 404 avant d'envoyer la réponse
-    res.status(404).send('Fichier non trouvé');
+    res.status(404).send('Fichier non trouvé bobby');
   }
 });
 
@@ -63,6 +69,6 @@ app.use(function(req,res,next){
 // #      # #    #   #   #      #   ##
 // ###### #  ####    #   ###### #    #
 
-http.listen(8080, function(){
-  console.log(`A l'écoute sur 8080`);
+http.listen(PORT, function(){
+  console.log(`App is up on ${PORT} !`);
 })

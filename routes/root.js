@@ -6,8 +6,9 @@ router
   .route("/")
   .get(mainController.landingPage);
 
-// router
-//   .route("/dashboard")
-//   .get(mainController.dashboardPage);
+router
+  .route("/dashboard")
+  .get(mainController.dashboardPage);
+
 
 module.exports = router;
