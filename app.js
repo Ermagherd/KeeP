@@ -29,7 +29,6 @@ app.use('/img', express.static(__dirname + '/public/img'));
 app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/vendor', express.static(__dirname + '/public/vendor'));
-app.use('/', routes);
 
 // #####   ####  #    # ##### ######  ####
 // #    # #    # #    #   #   #      #
@@ -38,10 +37,7 @@ app.use('/', routes);
 // #   #  #    # #    #   #   #      #    #
 // #    #  ####   ####    #   ######  ####
 
-router.get('/', function(req, res, next){
-  res.send("we're in boys ");
-});
-
+app.use('/', routes);
 
 // ###### #####  #####   ####  #####   ####
 // #      #    # #    # #    # #    # #
