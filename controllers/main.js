@@ -67,7 +67,7 @@ module.exports.landingPage = function (req, res, next) {
       res
       .status(200)
       .render('index', {
-        test: data.test
+        // test: data.test
       });
       // .send("This is our home page from controller");
     }
