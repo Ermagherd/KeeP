@@ -53,8 +53,7 @@ module.exports.landingPage = function (req, res, next) {
   // find all athletes who play tennis, selecting the 'name' and 'age' fields
   users.
   find().
-  where('annee').equals('1983').
-  lean().
+  where('annee').equals('1984').
   // where('age').gt(17).lt(50).  //Additional where query
   // limit(5).
   // sort({ age: -1 }).

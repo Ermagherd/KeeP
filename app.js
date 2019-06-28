@@ -32,6 +32,7 @@ app.use('/www', express.static(__dirname + '/bin/www'));
 app.use('/img', express.static(__dirname + '/public/img'));
 app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/js', express.static(__dirname + '/public/js'));
+app.use('/semantic', express.static(__dirname + '/public/vendor/semantic/dist'));
 app.use('/vendor', express.static(__dirname + '/public/vendor'));
 
 app.set('view engine', 'pug');
