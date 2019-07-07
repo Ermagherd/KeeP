@@ -10,5 +10,4 @@ router
   .route("/dashboard")
   .get(mainController.dashboardPage);
 
-
 module.exports = router;

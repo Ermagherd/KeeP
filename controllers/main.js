@@ -45,40 +45,53 @@ var awesome_second_instance = new SecondModel({
 //   // saved!
 // })
 
-
 module.exports.landingPage = function (req, res, next) {
 
-  var users = mongoose.model('TestModel', secondModelSchema);
+  // if (!req.session.userId) {
+  //   res.redirect('/account/login');
+  // } else {
 
-  // find all athletes who play tennis, selecting the 'name' and 'age' fields
-  users.
-  find().
-  where('annee').equals('1984').
-  // where('age').gt(17).lt(50).  //Additional where query
-  // limit(5).
-  // sort({ age: -1 }).
-  // select('name age').
-  exec(
-    function (err, result) {
-      var data = {
-        test: result[0].model
-      };
-    
-      res
-      .status(200)
-      .render('index', {
-        // test: data.test
-      });
-      // .send("This is our home page from controller");
-    }
-  );
+    var users = mongoose.model('TestModel', secondModelSchema);
+
+    // find all athletes who play tennis, selecting the 'name' and 'age' fields
+    users.
+    find().
+    where('annee').equals('1984').
+    // where('age').gt(17).lt(50).  //Additional where query
+    // limit(5).
+    // sort({ age: -1 }).
+    // select('name age').
+    exec(
+      function (err, result) {
+
+        const { userId } = req.session;
+        console.log(userId);
+
+        var data = {
+          test: result[0].model,
+          admin: true
+        };
+        res
+        .status(200)
+        .render('index', {
+          data: data
+        });
+        // .send("This is our home page from controller");
+      }
+    );
+
+  // }
 
 
-  
 };
 
 module.exports.dashboardPage = function (req, res, next) {
-    res
-    .status(200)
-    .send("This is the dashboard page from controller");
+  let data = {
+
+  };
+  res
+  .status(200)
+  .render('dashboard.pug', {
+    data: data
+  });
 };

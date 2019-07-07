@@ -31230,7 +31230,7 @@ a.ui.card:hover,
   position: absolute;
   top: 0px;
   left: 0px;
-  opacity: 0 !important;
+  opacity: 1 !important;
   outline: none;
   z-index: 3;
   width: 17px;
