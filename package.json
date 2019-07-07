@@ -4,7 +4,8 @@
   "description": "social network app",
   "main": "app.js",
   "scripts": {
-    "test": "npm start"
+    "start": "node app.js",
+    "test": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,18 @@
   "bugs": {
     "url": "https://github.com/Ermagherd/KeeP/issues"
   },
-  "homepage": "https://github.com/Ermagherd/KeeP#readme"
+  "homepage": "https://github.com/Ermagherd/KeeP#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-mongo": "^3.0.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "io": "^1.0.0",
+    "mongodb": "^3.2.7",
+    "mongoose": "^5.6.1",
+    "nodemon": "^1.19.1",
+    "pug": "^2.0.4",
+    "semantic-ui": "^2.4.2"
+  }
 }

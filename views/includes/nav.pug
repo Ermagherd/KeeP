@@ -1,0 +1,10 @@
+.ui.inverted.segment
+  .ui.inverted.secondary.menu
+    a.active.item(href='/')
+      | Home
+    a.item(href='/account/signup')
+      | Register
+    - var userIsAdmin = data.admin || false
+    if userIsAdmin
+      a.item
+        | Admin Panel
