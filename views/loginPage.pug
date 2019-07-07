@@ -1,0 +1,18 @@
+include includes/header.pug
+body
+  include includes/nav.pug
+
+  h1 Login Page
+
+  section
+    form.ui.form.login.segment(method='POST' action="/account/login" name='login-form')
+      p Enter your login informations
+      .two.fields
+        .field
+          label Email
+          input(type='email' name='email')
+        .field
+          label Password
+          input(type='password' name='password')
+      .ui.primary.submit.button Submit
+      .ui.error.message
