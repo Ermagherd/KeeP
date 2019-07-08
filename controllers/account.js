@@ -1,6 +1,7 @@
 // LOGIN
 // TESTING //
 // TESTING //
+const validator = require('validator');
 
 const users = [
   {id: 1, name: 'Alex', email: 'alex@gmail.com', password: 'secret1'},
@@ -60,15 +61,31 @@ module.exports.signupPage = function (req, res, next) {
 
 module.exports.createUser = function (req, res, next) {
 
-  const { firstName, lastName, username, email, password } = req.body;
+
+
+  const { firstName, lastName, username, email, password, passwordConfirmation } = req.body;
+  console.log(firstName + ' ' + lastName + ' ' + username + ' ' + email + ' ' + password + ' ' + passwordConfirmation);
+
+  console.log(validator.isEmail('foo@bar.com'));
+  // req.check('password', 'Invalid Password').isLength({min: 8}).equals(req.body.passwordConfirmation);
+
+  // var errors = req.validationErrors();
+  // if (errors) {
+  //   req.session.errors = errors;
+  // }
+
+  // console.log(req.session.errors);
 
   if ( firstName && lastName && username && email && password ) {
-    const exists = ''; // DB CHECK!!  
+    const exists = true; // DB CHECK!!
+    console.log('here');
   }
 
-  if (!exists) {
-    // écriture en DB
-  }
+  // if (!exists) {
+  //   // écriture en DB
+  // } else {
+
+  
 
   // req.session.userId = user.id  // SI BESOIN
 
@@ -82,6 +99,8 @@ module.exports.createUser = function (req, res, next) {
   .render('createUser', {
     data: data
   });
+
+  // }
 };
 
 // LOGOUT

@@ -7,24 +7,25 @@
 // #       #  #  #      #   #  #      #    # #    #
 // ###### #    # #      #    # ######  ####   ####
 
-const express    = require('express');
-const app        = express();
-const http       = require('http').Server(app);
-const conf       = require("./secrets/conf.js");
-const bodyParser = require("body-parser");
-const routes     = require('./routes');
-const mongoose   = require('mongoose');
-const session    = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const pug        = require('pug');
-const TWO_HOURS = 3000 * 60 * 60 * 2;
+const express          = require('express');
+const app              = express();
+const http             = require('http').Server(app);
+const conf             = require('./secrets/conf.js');
+const bodyParser       = require('body-parser');
+const routes           = require('./routes');
+const mongoose         = require('mongoose');
+const { check, validationResult } = require('express-validator');
+const session          = require('express-session');
+const MongoStore       = require('connect-mongo')(session);
+const pug              = require('pug');
+const TWO_HOURS        = 3000 * 60 * 60 * 2;
 const {
-  PORT = 8080,
-  NODE_ENV = 'development',
-  SESS_NAME = 'sid',
-  SESS_SECRET = conf.secret,
+  PORT          = 8080,
+  NODE_ENV      = 'development',
+  SESS_NAME     = 'sid',
+  SESS_SECRET   = conf.secret,
   SESS_LIFETIME = TWO_HOURS
-} = process.env;
+  }             = process.env;
 const IN_PROD = NODE_ENV === 'production';
 
 // #    #  ####  #    #  ####   ####   ####   ####  ######
@@ -52,6 +53,7 @@ app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/semantic', express.static(__dirname + '/public/vendor/semantic/dist'));
 app.use('/vendor', express.static(__dirname + '/public/vendor'));
 app.set('view engine', 'pug');
+app.use(check());
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // ####  ######  ####   ####  #  ####  #    #  ####

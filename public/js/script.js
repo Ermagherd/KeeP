@@ -6,7 +6,7 @@ window.addEventListener("DOMContentLoaded", function(){
   .form({
     fields: {
       name: {
-        identifier: 'first-name',
+        identifier: 'firstName',
         rules: [
           {
             type   : 'empty',
@@ -15,7 +15,7 @@ window.addEventListener("DOMContentLoaded", function(){
         ]
       },
       skills: {
-        identifier: 'last-name',
+        identifier: 'lastName',
         rules: [
           {
             type   : 'empty',
@@ -32,6 +32,15 @@ window.addEventListener("DOMContentLoaded", function(){
           }
         ]
       },
+      email: {
+        identifier: 'email',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please enter an email'
+          }
+        ]
+      },
       password: {
         identifier: 'password',
         rules: [
@@ -42,6 +51,19 @@ window.addEventListener("DOMContentLoaded", function(){
           {
             type   : 'minLength[6]',
             prompt : 'Your password must be at least {ruleValue} characters'
+          }
+        ]
+      },
+      confirmation: {
+        identifier: 'passwordConfirmation',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'Please confirm your password'
+          },
+          {
+            type   : 'minLength[6]',
+            prompt : 'Your passwords must be identical'
           }
         ]
       },
