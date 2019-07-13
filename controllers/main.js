@@ -67,6 +67,10 @@ module.exports.landingPage = function (req, res, next) {
         const { userId } = req.session;
         console.log(userId);
 
+        // req.session.errors = 'wrong path';
+        // console.log(req.session.errors);
+        // console.log('Hello');
+
         var data = {
           test: result[0].model,
           admin: true

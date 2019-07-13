@@ -10,7 +10,7 @@ router
 router
   .route("/signup")
   .get(accountController.signupPage)
-  .post(accountController.createUser);
+  .post(accountController.validateUserCreation, accountController.createUser);
 
 router
   .route("/logout")
