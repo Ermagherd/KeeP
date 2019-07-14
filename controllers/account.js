@@ -15,24 +15,11 @@ var userSchema = new Schema(
     creationDate : { type: Date, default: Date.now() }
   });
 
+var user = mongoose.model('user', userSchema );
 
 // BCRYPT
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-// const myPlaintextPassword = 's0/\/\P4$$w0rD';
-// const someOtherPlaintextPassword = 'not_bacon';
-
-// TESTING //
-// TESTING //
-
-// const users = [
-//   {id: 1, name: 'Alex', email: 'alex@gmail.com', password: 'secret1'},
-//   {id: 2, name: 'Julie', email: 'julie@gmail.com', password: 'secret2'},
-//   {id: 3, name: 'David', email: 'david@gmail.com', password: 'secret3'}
-// ];
-
-// TESTING //
-// TESTING //
 
 // LOGIN GET
 module.exports.loginPage = function (req, res, next) {
@@ -45,35 +32,73 @@ module.exports.loginPage = function (req, res, next) {
   res
   .status(200)
   .render('loginPage', {
-    data: data
+    data: data,
+    message: req.flash('wrong login')
   });
 };
+
+// LOGIN IN VALIDATOR
+module.exports.validateLogin = [
+  check('email', 'email didn\'t match requirements')
+    .isEmail()
+    .normalizeEmail()
+    .trim()
+    .escape(),
+  check('password', 'Password didn\'t match requirements')
+    .not().isEmpty()
+    .isLength({min:8, max: 50})
+    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{7,}$/, "i")
+    .trim()
+    .escape(),
+];
 
 // LOGIN POST
 module.exports.userLogin = function (req, res, next) {
 
   console.log('userLogin (POST) :');
-
   const { email, password } = req.body;
+  let data = {};
 
-  if (email && password) {
-    const user = users.find(
-      user => user.email === email && user.password === password
-    )
-    if (user) {
-      req.session.userId = user.id;
-      return res.redirect('/');
-    }
+  const errors = validationResult(req);
+  console.log(errors.array());
+
+  if (!errors.isEmpty()) {
+
+    let errorsMessages = '';
+    errors.array().forEach(element => {
+      errorsMessages += element.msg + '. ';
+    });
+    req.flash('wrong login', 'Something went wrong with your login (' + errorsMessages + '). Please try again.');
+    return res.redirect('/account/login');
+
   }
 
-  let data = {
+  // * CHECK FOR USER IN DB (EMAIL)
 
-  };
-  res
-  .status(200)
-  .render('userLogin', {
-    data: data
-  });
+  function verifyLogin () {
+
+    user
+      .findOne({email: email})
+      .exec(function (err, result) {
+        console.log('result is : ' + result)
+        var accountPassword = result.password;
+        var passwordTest = bcrypt.compareSync(password, accountPassword);
+        if (passwordTest) {
+          res
+          .status(200)
+          .render('userLogin', {
+            data: data
+          });
+        } else {
+          req.flash('wrong login', 'Invalid Password. Please try again');
+          return res.redirect('/account/login');
+        }
+      });
+
+  }
+
+  verifyLogin();
+
 };
 
 //SIGN IN GET
@@ -82,45 +107,48 @@ module.exports.signupPage = function (req, res, next) {
   console.log('signupPage (GET) :');
 
   let data = {
-
+    sign: 'bobby'
   };
   res
   .status(200)
   .render('signupPage', {
-    data: data
+    data: data,
+    message: req.flash('wrong signup')
   });
 };
 
 // SIGN IN VALIDATOR
 module.exports.validateUserCreation = [
-  check('firstName', 'firstName doesn\'t match requirements')
+  check('firstName', 'firstName didn\'t match requirements')
     .not().isEmpty()
-    .isAlpha()
+    .matches(/^[A-zÀ-ÖØ-öø-ÿ]+$/, "i")
+    .isLength({min:1, max: 30})
     .trim()
     .escape(),
-  check('lastName', 'firstName doesn\'t match requirements')
+  check('lastName', 'firstName didn\'t match requirements')
     .not().isEmpty()
-    .isAlpha()
+    .matches(/^[A-zÀ-ÖØ-öø-ÿ]+$/, "i")
+    .isLength({min:1, max: 30})
     .trim()
     .escape(),
-  check('username', 'username doesn\'t match requirements')
+  check('username', 'username didn\'t match requirements')
     .not().isEmpty()
-    .isAlphanumeric()
+    .matches(/^[A-zÀ-ÖØ-öø-ÿ0-9]+$/, "i")
     .isLength({min:3, max: 20})
     .trim()
     .escape(),
-  check('email', 'email doesn\'t match requirements')
+  check('email', 'email didn\'t match requirements')
     .isEmail()
     .normalizeEmail()
     .trim()
     .escape(),
-  check('password', 'Password doesn\'t match requirements')
+  check('password', 'Password didn\'t match requirements')
     .not().isEmpty()
     .isLength({min:8, max: 50})
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{7,}$/, "i")
     .trim()
     .escape(),
-  check('passwordConfirmation', 'Password Confirmation doesn\'t match requirements')
+  check('passwordConfirmation', 'Password Confirmation didn\'t match requirements')
     .not().isEmpty()
     .isLength({min:8, max: 50})
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{7,}$/, "i")
@@ -133,91 +161,93 @@ module.exports.createUser = function (req, res, next) {
 
   console.log('createUser (POST) :');
   const { firstName, lastName, username, email, password } = req.body;
+  let data = {
+    username: username
+  };
 
-  //TODO handling registration errors with messages.
-  //
+  // * CHECK DATA VALIDITY AND REDIRECT IF FAILED
+
   const errors = validationResult(req);
-  console.log(errors.array());
+  // console.log(errors.array());
+
   if (!errors.isEmpty()) {
 
-    return res.redirect('/account/login');
-    // return res.status(422).json({ errors: errors.array() });
-    // return res.redirect('/login');
+    let errorsMessages = '';
+    errors.array().forEach(element => {
+      errorsMessages += element.msg + '. ';
+    });
+    req.flash('wrong signup', 'Something went wrong with your account creation (' + errorsMessages + '). Please try again.');
+    return res.redirect('/account/signup');
 
   }
-  // next();
 
+  // * GLOBAL USER MODEL
 
-  //TODO check for existing user in db
-  // if (exists) {
+  // var user = mongoose.model('user', userSchema );
 
-    //TODO if user exist => error and login
+  // * CHECK FOR USER IN DB (EMAIL)
 
-  // } else {
+  function checkIfUserExist () {
 
-    //TODO if user doesn't exist => create and display confirmation
+    user
+      .findOne()
+      .or([{ email: email }, { username: username }])
+      .exec(function (err, result) {
 
-  var user = mongoose.model('user', userSchema );
+        if (err) throw err;
+        if (result === [] || result === null || result === undefined ) {
 
-  var userInstance = new user ({
-    firstName: firstName,
-    lastName: lastName,
-    username: username,
-    email: email,
-    password: password,
-  });
+          // * SAVE NEW USER
+          var userInstance = new user ({
+            firstName: firstName.toLowerCase(),
+            lastName: lastName.toLowerCase(),
+            username: username,
+            email: email,
+            password: password,
+          });
 
-  /**
-   * HASH PASSWORD AND SAVE PROFILE
-   */
-  // bcrypt.genSalt(saltRounds, function(err, salt) {
-  //   bcrypt.hash(password, salt, function(err, hash) {
-    
-  //     userInstance.password = hash;
+          // * HASH PASSWORD AND SAVE PROFILE
+          bcrypt.genSalt(saltRounds, function(err, salt) {
+            bcrypt.hash(password, salt, function(err, hash) {
 
-  //     userInstance
-  //       .save()
-  //       .then(result => {
-  //         console.log(result);
-  //       })
-  //       // .catch(err => console.log(err));
-  //       .catch(function (err) {
-  //         console.log(err);
-  //       });
+              userInstance.password = hash;
+              userInstance
+                .save()
+                .then(result => {
+                  // console.log(result);
+                  res
+                  .status(200)
+                  .render('createUser', {
+                    data: data
+                  });
+                })
+                .catch(function (err) {
+                  // console.log(err);
+                });
 
-  //   });
-  // });
+            });
+          });
 
-  /**
-   * COMPARE DB PROFILE PASSWORD WITH QUERY
-   */
-  user.
-    find().
-    where('firstName').equals('Pierre').
-    // where('age').gt(17).lt(50).  //Additional where query
-    // limit(5).
-    // sort({ age: -1 }).
-    // select('name age').
-    exec(
-      function (err, result) {
-        let test = bcrypt.compareSync(password, result[0].password); // true
-        console.log(test);
-      }
-    );
-  // req.session.userId = user.id  // SI BESOIN
-  // return res.redirect('/')  // SI BESOIN
+        } else {
 
-    let data = {
-      username: username
-    };
-
-    res
-    .status(200)
-    .render('createUser', {
-      data: data
+          // console.log(result);
+          let flashError = '';
+          if (result.username === username) {
+            flashError = 'Username is already used.';
+          }
+          if (result.email === email) {
+            flashError = 'Email adress is already used.';
+          }
+          if (result.username === username && result.email === email) {
+            flashError = 'Username and email adress are already used.';
+          }
+          req.flash('wrong signup', flashError + ' Please try again with another one.');
+          return res.redirect('/account/signup');
+        }
     });
+  }
 
-  // };
+  checkIfUserExist();
 
 };
 

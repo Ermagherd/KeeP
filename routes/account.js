@@ -5,7 +5,7 @@ const router = express.Router();
 router
   .route("/login")
   .get(accountController.loginPage)
-  .post(accountController.userLogin);
+  .post(accountController.validateLogin, accountController.userLogin);
 
 router
   .route("/signup")

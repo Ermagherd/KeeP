@@ -1,8 +1,12 @@
-include includes/header.pug
+ include includes/header.pug
 body
   include includes/nav.pug
 
   h1 Login Page
+
+  #warningMessage
+  if (typeof message !== 'undefined')
+    p= message
 
   section
     form.ui.form.login.segment(method='POST' action="/account/login" name='login-form')

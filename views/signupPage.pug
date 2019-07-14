@@ -3,6 +3,10 @@ body
   include includes/nav.pug
 
   h1 Sign Up Page
+  
+  #warningMessage
+    if (typeof message !== 'undefined')
+      p= message
 
   section
     form.ui.form.login.segment(method='POST' action="/account/signup" name='signup-form')
@@ -10,22 +14,22 @@ body
       .three.fields
         .field
           label First Name
-          input(placeholder='First Name' name='firstName' type='text')
+          input(placeholder='First Name' name='firstName' type='text' value='')
         .field
           label Last Name
-          input(placeholder='Last Name' name='lastName' type='text')
+          input(placeholder='Last Name' name='lastName' type='text' value='')
         .field
           label Username
-          input(placeholder='Username' name='username' type='text')
+          input(placeholder='Username' name='username' type='text' value='')
       .three.fields
         .field
           label Email
-          input(type='email' name='email')
+          input(placeholder='Email' type='email' name='email' value='')
         .field
           label Password
-          input(type='password' name='password')
+          input(placeholder='Password' type='password' name='password' value='')
         .field
           label Confirm Password
-          input(type='password' name='passwordConfirmation')
+          input(placeholder='Confirm Password' type='password' name='passwordConfirmation' value='')
       .ui.primary.submit.button Submit
       .ui.error.message
