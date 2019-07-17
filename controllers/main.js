@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var Schema   = mongoose.Schema;
 
 module.exports.landingPage = function (req, res, next) {
 
@@ -15,7 +15,7 @@ module.exports.landingPage = function (req, res, next) {
     // TODO HERE COMES PARAMETERS !!!!
     // TODO HERE COMES PARAMETERS !!!!
     
-    res.redirect('/dashboard');
+    res.redirect('/user/profile');
 
   }
 
