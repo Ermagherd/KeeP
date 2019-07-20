@@ -281,7 +281,8 @@ module.exports.createUser = function(req, res, next) {
             lastName: lastName.toLowerCase(),
             username: username,
             email: email,
-            password: password
+            password: password,
+            role: "user"
           });
 
           // * HASH PASSWORD AND SAVE PROFILE
