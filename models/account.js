@@ -7,7 +7,18 @@ var userSchema = new Schema({
   username    : { type: String, required: true },
   email       : { type: String, required: true },
   password    : { type: String, required: true },
-  role        : { type: String, required: true },
+  role        : { type: String, default: "" },
+  gender      : { type: String, default: "" },
+  bio         : { type: String, default: "" },
+  preferences : { nested :
+    {
+      first_preference :
+      {
+        type: String,
+        default:"no preferences"
+      }
+    }
+  },
   creationDate: { type: Date, default: Date.now() }
 });
 

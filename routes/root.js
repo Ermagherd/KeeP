@@ -7,6 +7,10 @@ router
   .get(mainController.landingPage);
 
 router
+  .route("/about")
+  .get(mainController.aboutPage);
+
+router
   .route("/dashboard")
   .get(mainController.dashboardPage);
 

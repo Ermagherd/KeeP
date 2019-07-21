@@ -3,17 +3,35 @@ include includes/header.pug
 body
   include includes/nav.pug
 
-  h1 Welcome on Index Page!
+  h1 Bienvenue sur KeeP !
+  section
+  #home-links
+
+    p Si vous poss&eacute;dez d&eacute;j&agrave; un compte, vous pouvez vous connecter ici
+    a(href='/account/login')
+      .ui.animated.button(tabindex='0')
+          .visible.content Se connecter
+          .hidden.content(href='account/login')
+            i.right.arrow.icon
+
+    p Sinon, vous pouvez rejoindre KeeP en suivant ce lien
+    a(href='/account/signup')
+      .ui.animated.button(tabindex='0')
+        .visible.content Créer un compte
+        .hidden.content
+          i.right.arrow.icon
 
   section
-  form.ui.form.login.segment(method='POST' action="/account/login" name='login-form')
-    p Enter your login informations
-    .two.fields
-      .field
-        label Email
-        input(type='email' name='email')
-      .field
-        label Password
-        input(type='password' name='password')
-    .ui.primary.submit.button Submit
-    .ui.error.message
+    #home-stat
+      .ui.labeled.button(tabindex='0')
+        .ui.red.button
+          i.heart.icon
+          |  Utilisateurs connectés
+        a.ui.basic.red.left.pointing.label
+          | 1,048
+      .ui.labeled.button(tabindex='0')
+        .ui.basic.blue.button
+          i.fork.icon
+          |  Messages envoyés
+        a.ui.basic.left.pointing.blue.label
+          | 1,048

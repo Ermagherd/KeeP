@@ -1,12 +1,24 @@
 .ui.inverted.segment
   .ui.inverted.secondary.menu
-    a.active.item(href='/user/profile')
+    - var userRole = data.role || 'v'
+    - var userName = data.userName
+    a.active.item(href='/')
       | Home
-    a.item(href='/account/signup')
-      | Register
-    - var userIsAdmin = data.admin || false
-    if userIsAdmin
-      a.item
+    a.item(href='/account/login')
+      | Login
+    if (userRole == 'v')
+      a.item(href='/account/signup')
+        | Register
+    if (userRole == 'a')
+      a.item(href='/dashboard')
         | Admin Panel
-    a.item(href='/account/logout')
-      | Logout
+    a.item(href='/about')
+      | About
+    unless (userName == false)
+      span.item
+        i.user.icon
+        span= userName
+    if (userRole == 'u' || userRole == 'a')
+      a.item(href='/account/logout')
+        i.power.off.icon
+        span logout

@@ -1,4 +1,5 @@
 const SESS_NAME = "sid";
+const functions = require('./functions');
 
 /*
 .##.....##....###....##.......####.########.....###....########..#######..########.
@@ -60,6 +61,9 @@ module.exports.loginPage = function(req, res, next) {
   console.log("loginPage (GET) :");
 
   let data = {};
+  data.role = functions.checkRole(req);
+  data.userName = functions.checkUserName(req);
+
   res.status(200).render("loginPage", {
     data: data,
     message: req.flash("wrong login")
@@ -132,9 +136,13 @@ module.exports.userLogin = function(req, res, next) {
       if (err) throw err;
       console.log("result is : " + result);
       var accountPassword = result.password;
-      var passwordTest = bcrypt.compareSync(password, accountPassword);
+      var passwordTest    = bcrypt.compareSync(password, accountPassword);
       if (passwordTest) {
-        req.session.userId = result._id;
+        req.session.userId   = result._id;
+        req.session.role     = result.role;
+        req.session.userName = result.username;
+        data.role = functions.checkRole(req);
+        data.userName = functions.checkUserName(req);
         res.status(200).render("userLogin", {
           data: data
         });
@@ -164,6 +172,9 @@ module.exports.signupPage = function(req, res, next) {
   let data = {
     sign: "bobby"
   };
+  data.role = functions.checkRole(req);
+  data.userName = functions.checkUserName(req);
+
   res.status(200).render("signupPage", {
     data: data,
     message: req.flash("wrong signup")
@@ -242,6 +253,8 @@ module.exports.createUser = function(req, res, next) {
   let data = {
     username: username
   };
+  data.role = functions.checkRole(req);
+  data.userName = functions.checkUserName(req);
 
   // * CHECK DATA VALIDITY AND REDIRECT IF FAILED
 
