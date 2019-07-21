@@ -1,5 +1,7 @@
-.ui.inverted.segment
+.ui.inverted.segment.navbar
   .ui.inverted.secondary.menu
+    a(href='/')
+      img.item(src='/img/logos/logo_keep.png')
     - var userRole = data.role || 'v'
     - var userName = data.userName
     a.active.item(href='/')
@@ -15,10 +17,10 @@
     a.item(href='/about')
       | About
     unless (userName == false)
-      span.item
+      span.item.username
         i.user.icon
         span= userName
     if (userRole == 'u' || userRole == 'a')
-      a.item(href='/account/logout')
+      a.item.role(href='/account/logout')
         i.power.off.icon
         span logout

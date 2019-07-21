@@ -3,35 +3,53 @@ include includes/header.pug
 body
   include includes/nav.pug
 
-  h1 Bienvenue sur KeeP !
-  section
-  #home-links
-
-    p Si vous poss&eacute;dez d&eacute;j&agrave; un compte, vous pouvez vous connecter ici
-    a(href='/account/login')
-      .ui.animated.button(tabindex='0')
-          .visible.content Se connecter
-          .hidden.content(href='account/login')
-            i.right.arrow.icon
-
-    p Sinon, vous pouvez rejoindre KeeP en suivant ce lien
-    a(href='/account/signup')
-      .ui.animated.button(tabindex='0')
-        .visible.content Créer un compte
-        .hidden.content
-          i.right.arrow.icon
-
-  section
-    #home-stat
-      .ui.labeled.button(tabindex='0')
-        .ui.red.button
-          i.heart.icon
-          |  Utilisateurs connectés
-        a.ui.basic.red.left.pointing.label
-          | 1,048
-      .ui.labeled.button(tabindex='0')
-        .ui.basic.blue.button
-          i.fork.icon
-          |  Messages envoyés
-        a.ui.basic.left.pointing.blue.label
-          | 1,048
+  section.accueil
+    .ui.middle.aligned.center.aligned.grid
+      .column
+        h1 Bienvenue sur KeeP !
+        #home-links
+          p Si vous poss&eacute;dez d&eacute;j&agrave; un compte, vous pouvez vous connecter ici
+          //- a(href='/account/login')
+          //-   .ui.animated.button(tabindex='0')
+          //-       .visible.content Se connecter
+          //-       .hidden.content(href='account/login')
+          //-         i.right.arrow.icon
+          //- .ui.grid
+          form.ui.grid.form.login(method='POST' action="/account/login" name='login-form')
+            .stretched.row
+              .three.wide.column
+              .five.wide.column
+                    .ui.left.icon.input
+                      i.user.icon
+                      input(type='email', name='email', placeholder='E-mail')
+              .five.wide.column
+                    .ui.left.icon.input
+                      i.lock.icon
+                      input(type='password', name='password', placeholder='Password')
+              .three.wide.column
+            .stretched.row
+              .six.wide.column
+              .four.wide.column
+                    .ui.primary.submit.button Submit
+              .six.wide.column
+          br
+          p Sinon, vous pouvez rejoindre KeeP en suivant ce lien
+          a(href='/account/signup')
+            .ui.animated.button(tabindex='0')
+              .visible.content Créer un compte
+              .hidden.content
+                i.right.arrow.icon
+        br
+        #home-stat
+          .ui.labeled.button(tabindex='0')
+            .ui.blue.button
+              i.user.icon
+              |  Utilisateurs connectés
+            a.ui.basic.blue.left.pointing.label
+              | 1,048
+          .ui.labeled.button(tabindex='0')
+            .ui.blue.button
+              i.paper.plane.icon
+              |  Messages envoyés
+            a.ui.basic.blue.left.pointing.label
+              | 1,048

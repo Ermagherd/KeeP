@@ -2,8 +2,91 @@
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 100%;
+	font-size: 1em;
 	font: inherit;
-	vertical-align: baseline;
+  vertical-align: baseline;
+  /* font-family: 'Overpass', sans-serif; */
+  font-family: 'Roboto', sans-serif;
 }
+
+body {
+  height: 100%;
+  background-color: rgb(235, 235, 235);
+}
+
+.ui.animated.button {
+  background-color: orange;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.ui.labeled.button {
+  margin: 0 5px 20px;
+}
+
+/*
+.##....##....###....##.....##
+.###...##...##.##...##.....##
+.####..##..##...##..##.....##
+.##.##.##.##.....##.##.....##
+.##..####.#########..##...##.
+.##...###.##.....##...##.##..
+.##....##.##.....##....###...
+*/
+
+.ui.inverted.segment.navbar {
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+}
+
+.ui.inverted.secondary.menu {
+  margin: 0 40px;
+}
+
+.ui.inverted.secondary.menu img {
+  width: 100px;
+}
+
+/*
+.##........#######...######...####.##....##
+.##.......##.....##.##....##...##..###...##
+.##.......##.....##.##.........##..####..##
+.##.......##.....##.##...####..##..##.##.##
+.##.......##.....##.##....##...##..##..####
+.##.......##.....##.##....##...##..##...###
+.########..#######...######...####.##....##
+*/
+
+.accueil {
+  display: flex;
+  height: 75%;
+  justify-content: center;
+}
+
+.ui.middle.aligned.center.aligned.grid {
+  width: 80vw;
+}
+
+
+/*
+.##......##....###....##.......##......
+.##..##..##...##.##...##.......##......
+.##..##..##..##...##..##.......##......
+.##..##..##.##.....##.##.......##......
+.##..##..##.#########.##.......##......
+.##..##..##.##.....##.##.......##......
+..###..###..##.....##.########.########
+*/
+
+.ui.grid {
+  margin: 0 50px;
+}
+
+
+
+
+
 

@@ -141,11 +141,7 @@ module.exports.userLogin = function(req, res, next) {
         req.session.userId   = result._id;
         req.session.role     = result.role;
         req.session.userName = result.username;
-        data.role = functions.checkRole(req);
-        data.userName = functions.checkUserName(req);
-        res.status(200).render("userLogin", {
-          data: data
-        });
+        return res.redirect("/");
       } else {
         req.flash("wrong login", "Invalid Password. Please try again");
         return res.redirect("/account/login");
@@ -306,10 +302,10 @@ module.exports.createUser = function(req, res, next) {
                 .save()
                 .then(result => {
                   // console.log(result);
-                  req.session.userId = result._id;
-                  res.status(200).render("createUser", {
-                    data: data
-                  });
+                  req.session.userId   = result._id;
+                  req.session.role     = result.role;
+                  req.session.userName = result.username;
+                  return res.redirect("/");
                 })
                 .catch(function(err) {
                   // console.log(err);
@@ -359,7 +355,7 @@ module.exports.logout = function(req, res, next) {
       return res.redirect("/");
     }
     res.clearCookie(SESS_NAME);
-    res.redirect("/account/login");
+    res.redirect("/");
   });
 
 };

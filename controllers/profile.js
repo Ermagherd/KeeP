@@ -63,9 +63,7 @@ module.exports.profilePage = function(req, res, next) {
   console.log("profilePage (GET) :");
 
   if (!req.session.userId) {
-
     return res.redirect("/account/login");
-
   } else {
 
     let searchedProfile = req.params.profile;
@@ -78,16 +76,34 @@ module.exports.profilePage = function(req, res, next) {
         data.searchedProfile = searchedProfile;
 
     // TODO CREATE SEPARATE ROUTES FOR VISITORS AND OWNER OF THE PROFILE
+    // TODO ===> ONLY PUT A BOOL [isProfileOwner] DANS DATA ET TRIER LES INFOS DANS LE PUG???
 
     if (searchedProfile === req.session.userName) {
 
-      res.status(200).render("dashboard", {
-        data: data
+      // * IF USER IS OWNER OF PROFILE
+
+      user
+      .findOne({ username: searchedProfile })
+      .exec(function(err, result) {
+
+        if (err) throw err;
+            data.bio      = result.bio;
+        let datePattern   = /(?:\bdigit-|\s|^)(\d{4})(?=[.?\s]|-digit\b|$)/g;
+            data.joinedIn = result.creationDate.toString().match(datePattern)[0].trim();
+        
+        console.log(data.joinedIn);
+
+        res.status(200).render("profile", {
+          data: data
+        });
+
       });
 
     } else {
 
-      res.status(200).render("dashboard", {
+      // * IF USER IS NOT OWNER OF PROFILE
+
+      res.status(200).render("profile", {
         data: data
       });
 
