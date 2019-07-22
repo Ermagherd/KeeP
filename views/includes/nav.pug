@@ -17,10 +17,13 @@
     a.item(href='/about')
       | About
     unless (userName == false)
-      span.item.username
-        i.user.icon
-        span= userName
+      a.item(href='/profile/' + userName)
+        span.username
+          i.user.icon
+          span= userName
     if (userRole == 'u' || userRole == 'a')
       a.item.role(href='/account/logout')
         i.power.off.icon
         span logout
+    select#user-search-bar-options.ui.fluid.search.dropdown.item(name='profile-selection')
+      option(value='') Search a profile

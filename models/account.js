@@ -23,3 +23,19 @@ var userSchema = new Schema({
 });
 
 module.exports.userSchema = userSchema;
+
+var postSchema = new Schema({
+  ownerUserName   : { type: String, required: true },
+  posts : { nested :
+    {
+      post :
+      {
+        type: String,
+        default:""
+      }
+    }
+  },
+  creationDate: { type: Date, default: Date.now() }
+});
+
+module.exports.postSchema = postSchema;

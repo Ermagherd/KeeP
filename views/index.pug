@@ -9,12 +9,6 @@ body
         h1 Bienvenue sur KeeP !
         #home-links
           p Si vous poss&eacute;dez d&eacute;j&agrave; un compte, vous pouvez vous connecter ici
-          //- a(href='/account/login')
-          //-   .ui.animated.button(tabindex='0')
-          //-       .visible.content Se connecter
-          //-       .hidden.content(href='account/login')
-          //-         i.right.arrow.icon
-          //- .ui.grid
           form.ui.grid.form.login(method='POST' action="/account/login" name='login-form')
             .stretched.row
               .three.wide.column
@@ -30,7 +24,7 @@ body
             .stretched.row
               .six.wide.column
               .four.wide.column
-                    .ui.primary.submit.button Submit
+                .ui.primary.submit.button Submit
               .six.wide.column
           br
           p Sinon, vous pouvez rejoindre KeeP en suivant ce lien

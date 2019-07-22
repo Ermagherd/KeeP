@@ -6,4 +6,8 @@ router
   .route("/:profile")
   .get(profileController.profilePage);
 
+router
+  .route("/all-users")
+  .get(profileController.allUsers);
+
 module.exports = router;

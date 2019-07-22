@@ -2,13 +2,10 @@ include includes/header.pug
 body
   include includes/nav.pug
 
-  //- h1 Profile Page for #{data.searchedProfile}
-
   .ui.grid
-    .stretched.row
-      .three.wide.column
-        h4.profile-info
-         | Informations de profil
+    //- .stretched.row
+    .three.wide.column
+      .ui.segment
         .ui.card
           .image
             img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
@@ -23,21 +20,48 @@ body
               i.user.icon
               | 22 Friends
 
-      .nine.wide.column
-        h4.profile-wall
-         | Mur
-        .ui.segment
-          | 1
-        .ui.segment
-          | 2
+    .nine.wide.column
+      .ui.segment
+        form.ui.form.user-post(action="/account/login" name='user-post-form')
+          .field
+            .ui.user-post.input
+              textarea#user-post(name='user-post', row="1", cols="33")
+                | What do you want to share ?
+          #post-submit.ui.primary.submit.button Submit
+      .ui.segment
+        .ui.items
+          .item
+            .image
+              img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
+            .content
+              //- a.header Header
+              //- .meta
+                span Description
+              .description
+                p Here is the description
+              //- .extra
+                | Additional Details
+      .ui.segment
+        .ui.items
+          .item
+            .image
+              img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
+            .content
+              //- a.header Header
+              //- .meta
+                span Description
+              .description
+                p Here is the description
+              //- .extra
+                | Additional Details
+      .ui.segment
+        | 2
 
-      .four.wide.column
-        h4.profile-feed
-         | Feed
-        .ui.segment
-          | 1
-        .ui.segment
-          | 2
-        .ui.segment
-          | 3
+    .four.wide.column
+      .ui.segment
+        | 1
+      .ui.segment
+        | 2
+      .ui.segment
+        | 3
 

@@ -3,15 +3,14 @@ include includes/header.pug
 body
   include includes/nav.pug
 
-  #warningMessage
-  if (typeof message !== 'undefined')
-    p= message
-
   .ui.grid
     .stretched.row
       .three.wide.column
       .ten.wide.column
-        h1 Login Page
+        #warningMessage
+        if (typeof message !== 'undefined')
+          p= message
+        h1 Login
         form.ui.form.login.segment(method='POST' action="/account/login" name='login-form')
           p Enter your login informations
           .two.fields
