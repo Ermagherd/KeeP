@@ -54,7 +54,6 @@ window.addEventListener("DOMContentLoaded", function() {
     function appendUsersSearch () {
       search.forEach(element => {
         $("#user-search-bar-options").append(
-          // '<div class="item">' + element.username + '</div>'
           '<option value="' + element.username + '">' + element.username + '</option>'
         );
       });
@@ -64,13 +63,14 @@ window.addEventListener("DOMContentLoaded", function() {
   }
   // appendUsersV1();
 
-  $("#user-search-bar input").focus(function () {
+  $(".ui.fluid.search.dropdown.selection.active.visible").click(function () {
 
-    console.log('search is : ' + search[0].username);
+    console.log('that\'s it');
+    // $(this).css({backgroundColor: "blue"});
 
-    $("#user-search-bar-options").siblings('i input').keyup(function() {
-      console.log( "Handler for .keyup() called." );
-    });
+    // $("#user-search-bar-options").siblings('i input').keyup(function() {
+    //   console.log( "Handler for .keyup() called." );
+    // });
 
   });
 });

@@ -94,7 +94,8 @@ textarea {
   color: black;
 }
 
-.ui.fluid.search.dropdown.item .default.text{
+.ui.fluid.search.dropdown.item .default.text,
+.ui.fluid.search.dropdown.item input.text {
   color: black;
 }
 
