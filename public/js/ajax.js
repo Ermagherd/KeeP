@@ -1,10 +1,8 @@
 "use strict";
 
-window.addEventListener("DOMContentLoaded", function() {
-
+$( document ).ready(function() {
 
   // * USER POST
-
   $("#post-submit").click(function(e){
 
     e.preventDefault();
@@ -22,9 +20,9 @@ window.addEventListener("DOMContentLoaded", function() {
 
   });
 
-  function appendUsersV1 () {
-    // * USER SEARCH
-    if ( search == undefined) {
+  // * USER SEARCH
+  function fetchUsers () {
+    if ( sessionStorage.users == undefined) {
       console.log('enter conditon');
 
       function GetString() {
@@ -36,11 +34,12 @@ window.addEventListener("DOMContentLoaded", function() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-              let array = [];
+              let arrayReturn = [];
               response.forEach(element => {
-                array.push(element);
+                arrayReturn.push(element.username);
               });
-              keyValue = array;
+              keyValue = arrayReturn;
+              sessionStorage.setItem('users', JSON.stringify(arrayReturn));
             },
             failure: function (response) {
                 console.log("wrong response from database call");
@@ -49,28 +48,47 @@ window.addEventListener("DOMContentLoaded", function() {
         return keyValue;
       }
       var search = GetString();
+      console.log('var search : ' + search);
     }
-
-    function appendUsersSearch () {
-      search.forEach(element => {
-        $("#user-search-bar-options").append(
-          '<option value="' + element.username + '">' + element.username + '</option>'
-        );
-      });
-    }
-    appendUsersSearch();
-
   }
-  // appendUsersV1();
+  fetchUsers();
 
-  $(".ui.fluid.search.dropdown.selection.active.visible").click(function () {
+  // * ADAPT PROFILE SEARCH SELECT ON KEYUP
+  $("input.search").keyup( function (e) {
 
-    console.log('that\'s it');
-    // $(this).css({backgroundColor: "blue"});
+    if (e.keyCode == 16) {
+      return;
+    }
 
-    // $("#user-search-bar-options").siblings('i input').keyup(function() {
-    //   console.log( "Handler for .keyup() called." );
-    // });
+    var research      = $(this).val();
+    var users         = JSON.parse(sessionStorage.users);
+    var pattern       = new RegExp(`^${research}`, "i");
+    var returnedMatch = [];
 
+    for (var i = 0; i < users.length; i++) {
+      if (pattern.test(users[i])){
+          returnedMatch.push(users[i]);
+      }
+    }
+
+    var sortedMatch = returnedMatch.sort();
+
+    $("#user-search").html('').append(
+      '<option value>Search a profile</option>'
+    );
+
+    for (var i = 0; i < sortedMatch.length; i++) {
+        $("#user-search").append(
+          '<option value="' + sortedMatch[i] + '">' + sortedMatch[i] + '</option>'
+        );
+    }
   });
+
+  // * GO TO PROFILE PAGE ON SEARCH PROFILE SELECTION
+  $('.dropdown').dropdown({
+    onChange: function (value) {
+      location.href='/profile/' + value;
+    }
+  });
+
 });

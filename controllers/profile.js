@@ -122,6 +122,8 @@ module.exports.profilePage = function(req, res, next) {
 
 module.exports.allUsers = function (req, res, next) {
 
+  console.log('all users are requested')
+
   user
     .find()
     .select('username')
@@ -130,7 +132,7 @@ module.exports.allUsers = function (req, res, next) {
       if (err) throw err;
 
       console.log("retour de query : " + result);
-
+      console.log('all users are sent');
       res.send(result);
 
     });

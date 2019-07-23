@@ -90,14 +90,8 @@ textarea {
 
 .ui.fluid.search.dropdown.item {
   width: 350px;
-  background-color: #fff;
-  color: black;
 }
 
-.ui.fluid.search.dropdown.item .default.text,
-.ui.fluid.search.dropdown.item input.text {
-  color: black;
-}
 
 /*
 .##........#######...######...####.##....##

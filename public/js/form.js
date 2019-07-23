@@ -1,6 +1,6 @@
 "use strict";
 
-window.addEventListener("DOMContentLoaded", function() {
+$(document).ready(function () {
 
   $(".ui.form.login").form({
     fields: {
