@@ -10,16 +10,36 @@ var userSchema = new Schema({
   role        : { type: String, default: "" },
   gender      : { type: String, default: "" },
   bio         : { type: String, default: "" },
-  preferences : { nested :
+  friends     : { nested :
     {
-      first_preference :
+      confirmed :
       {
-        type: String,
-        default:"no preferences"
+        type   : Array,
+        default: []
+      },
+      pending :
+      {
+        type   : Array,
+        default: []
+      },
+      rejected :
+      {
+        type   : Array,
+        default: []
+      },
+      requested :
+      {
+        type   : Array,
+        default: []
+      },
+      unaccepted :
+      {
+        type   : Array,
+        default: []
       }
     }
   },
-  creationDate: { type: Date, default: Date.now() }
+  creationDate : { type: Date, default: Date.now() }
 });
 
 module.exports.userSchema = userSchema;

@@ -2,34 +2,6 @@ include includes/header.pug
 body
   include includes/nav.pug
 
-  //- h1 Sign Up PagE
-
-  //- section
-    form.ui.form.login.segment(method='POST' action="/account/signup" name='signup-form')
-      p Tell Us About Yourself bobby
-      .three.fields
-        .field
-          label First Name
-          input(placeholder='First Name' name='firstName' type='text' value='')
-        .field
-          label Last Name
-          input(placeholder='Last Name' name='lastName' type='text' value='')
-        .field
-          label Username
-          input(placeholder='Username' name='username' type='text' value='')
-      .three.fields
-        .field
-          label Email
-          input(placeholder='Email' type='email' name='email' value='')
-        .field
-          label Password
-          input(placeholder='Password' type='password' name='password' value='')
-        .field
-          label Confirm Password
-          input(placeholder='Confirm Password' type='password' name='passwordConfirmation' value='')
-      .ui.primary.submit.button Submit
-      .ui.error.message
-
   .ui.grid
     .stretched.row
       .three.wide.column

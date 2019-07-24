@@ -7,6 +7,10 @@ router
   .get(profileController.allUsers);
 
 router
+  .route("/follow")
+  .post(profileController.follow);
+
+router
   .route("/:profile")
   .get(profileController.profilePage);
 

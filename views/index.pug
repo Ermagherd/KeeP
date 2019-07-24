@@ -8,6 +8,9 @@ body
       .column
         h1 Bienvenue sur KeeP !
         #home-links
+          #warningMessage
+          if (typeof message !== 'undefined')
+            p= message
           p Si vous poss&eacute;dez d&eacute;j&agrave; un compte, vous pouvez vous connecter ici
           form.ui.grid.form.login(method='POST' action="/account/login" name='login-form')
             .stretched.row
@@ -15,7 +18,7 @@ body
               .five.wide.column
                     .ui.left.icon.input
                       i.user.icon
-                      input(type='email', name='email', placeholder='E-mail')
+                      input(type='username', name='username', placeholder='Username')
               .five.wide.column
                     .ui.left.icon.input
                       i.lock.icon

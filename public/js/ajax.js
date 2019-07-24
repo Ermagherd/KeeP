@@ -55,6 +55,13 @@ $( document ).ready(function() {
 
   $("input.search").focus( function () {
     fetchUsers();
+    var users      = JSON.parse(sessionStorage.users);
+    var firstUsers = users.slice(0, 15);
+    for (var i = 0; i < firstUsers.length; i++) {
+      $("#user-search").append(
+        '<option value="' + firstUsers[i] + '">' + firstUsers[i] + '</option>'
+      );
+    }
   });
 
   // * ADAPT PROFILE SEARCH SELECT ON KEYUP
@@ -87,6 +94,36 @@ $( document ).ready(function() {
           '<option value="' + sortedMatch[i] + '">' + sortedMatch[i] + '</option>'
         );
     }
+  });
+
+  // * ADD FRIEND
+  $('#add-friend').click( function () {
+
+    $(this).addClass('loading');
+
+    let userToFollow = $('div.header').text();
+
+    $.ajax({
+      type: "POST",
+      url: "/profile/follow",
+      data : {
+        userToFollow: userToFollow
+      },
+      success: function (response) {
+        console.log(response);
+        $('#add-friend').removeClass('loading');
+        $('#add-friend').parent().html(
+          '<div class="ui fluid disabled secondary button" id="following"><i class="user icon"></i>Following</div>'
+        );
+      },
+      failure: function (response) {
+          console.log("Unable to follow user.");
+          $(this).removeClass('loading');
+      }
+    });
+
+
+
   });
 
   // * GO TO PROFILE PAGE ON SEARCH PROFILE SELECTION

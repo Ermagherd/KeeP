@@ -80,7 +80,7 @@ module.exports.profilePage = function(req, res, next) {
         } else {
           data.isProfileOwner = false;
         }
-        
+
               data.bio      = result.bio;
           let datePattern   = /(?:\bdigit-|\s|^)(\d{4})(?=[.?\s]|-digit\b|$)/g;
               data.joinedIn = result.creationDate.toString().match(datePattern)[0].trim();
@@ -123,10 +123,34 @@ module.exports.allUsers = function (req, res, next) {
 
 };
 
-// where('name.last').equals('Ghost').
-// where('age').gt(17).lt(66).
-// where('likes').in(['vaporizing', 'talking']).
-// limit(10).
-// sort('-occupation').
-// select('name occupation').
-// exec(callback);
+/*
+.########..#######..##.......##........#######..##......##
+.##.......##.....##.##.......##.......##.....##.##..##..##
+.##.......##.....##.##.......##.......##.....##.##..##..##
+.######...##.....##.##.......##.......##.....##.##..##..##
+.##.......##.....##.##.......##.......##.....##.##..##..##
+.##.......##.....##.##.......##.......##.....##.##..##..##
+.##........#######..########.########..#######...###..###.
+*/
+
+module.exports.follow = function (req, res, next) {
+
+  const { userToFollow } = req.body;
+  const userFollowing = req.session.userName;
+
+
+  user
+    .find({username: userFollowing})
+    .select('username')
+    .exec(function(err, result) {
+
+      if (err) throw err;
+
+      // console.log("retour de query : " + result);
+      // console.log('all users are sent');
+
+      res.send();
+
+    });
+
+};

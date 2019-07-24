@@ -80,9 +80,11 @@ module.exports.loginPage = function(req, res, next) {
 .########..#######...######...####.##....##....####.##....##.......###....##.....##.########.####.########..##.....##....##.....#######..##.....##
 
 */module.exports.validateLogin = [
-  check("email", "email didn't match requirements")
-    .isEmail()
-    .normalizeEmail()
+  check("username", "Username didn't match requirements")
+    .not()
+    .isEmpty()
+    .matches(/^[A-zÀ-ÖØ-öø-ÿ0-9]+$/, "i")
+    .isLength({ min: 3, max: 20 })
     .trim()
     .escape(),
   check("password", "Password didn't match requirements")
@@ -107,7 +109,7 @@ module.exports.loginPage = function(req, res, next) {
 module.exports.userLogin = function(req, res, next) {
 
   console.log("userLogin (POST) :");
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   let data = {};
 
   // * CHECK DATA VALIDITY AND REDIRECT IF FAILED
@@ -129,21 +131,26 @@ module.exports.userLogin = function(req, res, next) {
     return res.redirect("/account/login");
   }
 
-  // * CHECK FOR USER IN DB (EMAIL)
+  // * CHECK FOR USER IN DB (username)
 
   function verifyLogin() {
-    user.findOne({ email: email }).exec(function(err, result) {
+    user.findOne({ username: username }).exec(function(err, result) {
       if (err) throw err;
       console.log("result is : " + result);
-      var accountPassword = result.password;
-      var passwordTest    = bcrypt.compareSync(password, accountPassword);
-      if (passwordTest) {
-        req.session.userId   = result._id;
-        req.session.role     = result.role;
-        req.session.userName = result.username;
-        return res.redirect("/");
+      if (result != null || result != undefined) {
+        var accountPassword = result.password;
+        var passwordTest    = bcrypt.compareSync(password, accountPassword);
+        if (passwordTest) {
+          req.session.userId   = result._id;
+          req.session.role     = result.role;
+          req.session.userName = result.username;
+          return res.redirect("/");
+        } else {
+          req.flash("wrong login", "Invalid Password. Please try again");
+          return res.redirect("/account/login");
+        }
       } else {
-        req.flash("wrong login", "Invalid Password. Please try again");
+        req.flash("wrong login", "User doesn't exist. Please try again");
         return res.redirect("/account/login");
       }
     });
@@ -186,28 +193,28 @@ module.exports.signupPage = function(req, res, next) {
 */
 
 module.exports.validateUserCreation = [
-  check("firstName", "firstName didn't match requirements")
+  check("firstName", "FirstName didn't match requirements")
     .not()
     .isEmpty()
     .matches(/^[A-zÀ-ÖØ-öø-ÿ]+$/, "i")
     .isLength({ min: 1, max: 30 })
     .trim()
     .escape(),
-  check("lastName", "firstName didn't match requirements")
+  check("lastName", "FirstName didn't match requirements")
     .not()
     .isEmpty()
     .matches(/^[A-zÀ-ÖØ-öø-ÿ]+$/, "i")
     .isLength({ min: 1, max: 30 })
     .trim()
     .escape(),
-  check("username", "username didn't match requirements")
+  check("username", "Username didn't match requirements")
     .not()
     .isEmpty()
     .matches(/^[A-zÀ-ÖØ-öø-ÿ0-9]+$/, "i")
     .isLength({ min: 3, max: 20 })
     .trim()
     .escape(),
-  check("email", "email didn't match requirements")
+  check("email", "Email didn't match requirements")
     .isEmail()
     .normalizeEmail()
     .trim()

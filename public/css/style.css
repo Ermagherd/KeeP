@@ -43,6 +43,11 @@ body {
   color: white;
 }
 
+.ui.secondary.button {
+  background-color: #2185d0;
+  color: white;
+}
+
 /*
 .########..#######..########..##.....##
 .##.......##.....##.##.....##.###...###
