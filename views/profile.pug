@@ -1,16 +1,17 @@
 include includes/header.pug
 body
   include includes/nav.pug
-
+  - var userIsProfileOwner = data.isProfileOwner
   .ui.grid
     //- .stretched.row
+    //- PROFILE INFOS
     .three.wide.column
       .ui.segment
         .ui.card
           .image
             img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
           .content
-            a.header #{data.searchedProfile}
+            .header #{data.searchedProfile}
             .meta
               span.date Joined in #{data.joinedIn}
             .description
@@ -19,15 +20,22 @@ body
             a
               i.user.icon
               | 22 Friends
+      if !userIsProfileOwner && data.role != 'v'
+        .ui.segment
+          #add-friend.ui.fluid.primary.button
+            i.user.icon
+            | Follow
 
+    //- WALL
     .nine.wide.column
-      .ui.segment
-        form.ui.form.user-post(action="/account/login" name='user-post-form')
-          .field
-            .ui.user-post.input
-              textarea#user-post(name='user-post', row="1", cols="33")
-                | What do you want to share ?
-          #post-submit.ui.primary.submit.button Submit
+      if userIsProfileOwner
+        .ui.segment
+          form.ui.form.user-post(action="/account/login" name='user-post-form')
+            .field
+              .ui.user-post.input
+                textarea#user-post(name='user-post', row="1", cols="33")
+                  | What do you want to share ?
+            #post-submit.ui.primary.submit.button Submit
       .ui.segment
         .ui.items
           .item
@@ -57,6 +65,7 @@ body
       .ui.segment
         | 2
 
+    //- FEED
     .four.wide.column
       .ui.segment
         | 1

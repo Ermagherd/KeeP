@@ -4,18 +4,15 @@
       img.item(src='/img/logos/logo_keep.png')
     - var userRole = data.role || 'v'
     - var userName = data.userName
-    a.active.item(href='/')
-      | Home
-    a.item(href='/account/login')
-      | Login
+    if (userRole == 'v')
+      a.item(href='/account/login')
+        | Login
     if (userRole == 'v')
       a.item(href='/account/signup')
         | Register
     if (userRole == 'a')
       a.item(href='/dashboard')
         | Admin Panel
-    a.item(href='/about')
-      | About
     unless (userName == false)
       a.item(href='/profile/' + userName)
         span.username
@@ -27,3 +24,5 @@
         span logout
     select#user-search.ui.fluid.search.dropdown.item(name='user-search')
       option(value='') Search a profile
+    a.item(href='/about')
+      | About Keep

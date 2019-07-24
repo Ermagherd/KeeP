@@ -22,7 +22,8 @@ $( document ).ready(function() {
 
   // * USER SEARCH
   function fetchUsers () {
-    if ( sessionStorage.users == undefined) {
+    sessionStorage.clear();
+    if ( sessionStorage.users == undefined ) {
       console.log('enter conditon');
 
       function GetString() {
@@ -51,7 +52,10 @@ $( document ).ready(function() {
       console.log('var search : ' + search);
     }
   }
-  fetchUsers();
+
+  $("input.search").focus( function () {
+    fetchUsers();
+  });
 
   // * ADAPT PROFILE SEARCH SELECT ON KEYUP
   $("input.search").keyup( function (e) {
@@ -61,6 +65,7 @@ $( document ).ready(function() {
     }
 
     var research      = $(this).val();
+    console.log(sessionStorage.users);
     var users         = JSON.parse(sessionStorage.users);
     var pattern       = new RegExp(`^${research}`, "i");
     var returnedMatch = [];

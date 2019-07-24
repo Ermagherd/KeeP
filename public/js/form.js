@@ -115,7 +115,7 @@ $(document).ready(function () {
           {
             type: "match[password]",
             prompt:
-              "Your password confirmation must be at least {ruleValue} characters"
+              "Your password confirmation must match your password"
           }
         ]
       },

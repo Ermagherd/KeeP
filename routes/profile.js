@@ -3,11 +3,12 @@ const profileController = require("../controllers/profile");
 const router            = express.Router();
 
 router
+  .route("/all-users")
+  .get(profileController.allUsers);
+
+router
   .route("/:profile")
   .get(profileController.profilePage);
 
-router
-  .route("/all-users")
-  .get(profileController.allUsers);
 
 module.exports = router;

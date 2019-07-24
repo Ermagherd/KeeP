@@ -165,9 +165,7 @@ module.exports.userLogin = function(req, res, next) {
 module.exports.signupPage = function(req, res, next) {
   console.log("signupPage (GET) :");
 
-  let data = {
-    sign: "bobby"
-  };
+  let data = {};
   data.role = functions.checkRole(req);
   data.userName = functions.checkUserName(req);
 
@@ -246,9 +244,7 @@ module.exports.validateUserCreation = [
 module.exports.createUser = function(req, res, next) {
   console.log("createUser (POST) :");
   const { firstName, lastName, username, email, password } = req.body;
-  let data = {
-    username: username
-  };
+  let data = {};
   data.role = functions.checkRole(req);
   data.userName = functions.checkUserName(req);
 
