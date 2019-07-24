@@ -30,6 +30,10 @@ body {
   margin-bottom: 40px;
 }
 
+.ui.animated.button:hover {
+  background-color: #2185d0;
+}
+
 .ui.labeled.button {
   margin: 0 5px 20px;
 }
