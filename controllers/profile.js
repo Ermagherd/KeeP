@@ -75,7 +75,7 @@ module.exports.profilePage = function(req, res, next) {
         // TODO CREATE SEPARATE ROUTES FOR VISITORS AND OWNER OF THE PROFILE
         // TODO ===> ONLY PUT A BOOL [isProfileOwner] DANS DATA ET TRIER LES INFOS DANS LE PUG?
 
-        if (searchedProfile === req.session.userName) { 
+        if (searchedProfile === req.session.userName) {
           data.isProfileOwner = true;
         } else {
           data.isProfileOwner = false;
@@ -138,6 +138,18 @@ module.exports.follow = function (req, res, next) {
   const { userToFollow } = req.body;
   const userFollowing = req.session.userName;
 
+  user
+    .findOneAndUpdate(
+      {username: userFollowing},
+      { $push:
+        {
+          'nested.requested.name': userToFollow
+        }},
+      function(err, result) {
+        console.log('seems ok');
+        res.send();
+      }
+    );
 
   user
     .find({username: userFollowing})
