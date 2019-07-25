@@ -10,33 +10,32 @@ var userSchema = new Schema({
   role        : { type: String, default: "" },
   gender      : { type: String, default: "" },
   bio         : { type: String, default: "" },
-  friends     : { nested :
+  friends     :
+  {
+    confirmed :
     {
-      confirmed :
-      {
-        type   : Array,
-        default: []
-      },
-      pending :
-      {
-        type   : Array,
-        default: []
-      },
-      rejected :
-      {
-        type   : Array,
-        default: []
-      },
-      requested :
-      {
-        type   : Array,
-        default: []
-      },
-      unaccepted :
-      {
-        type   : Array,
-        default: []
-      }
+      type   : Array,
+      default: []
+    },
+    pending :
+    {
+      type   : Array,
+      default: []
+    },
+    rejected :
+    {
+      type   : Array,
+      default: []
+    },
+    requested :
+    {
+      type   : Array,
+      default: []
+    },
+    unaccepted :
+    {
+      type   : Array,
+      default: []
     }
   },
   creationDate : { type: Date, default: Date.now() }

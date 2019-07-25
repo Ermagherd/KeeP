@@ -60,36 +60,60 @@ module.exports.profilePage = function(req, res, next) {
         data.userName        = functions.checkUserName(req);
         data.searchedProfile = searchedProfile;
 
+
+    // * FETCH REQUESTED PROFILE INFOS
     user
     .findOne({ username: searchedProfile })
-    .exec(function(err, result) {
+    .exec(function(err, searchedProfileResult) {
 
       if (err) throw err;
 
-      if (result == null || result == undefined) {
+      if (searchedProfileResult == null || searchedProfileResult == undefined) {
 
         next();
 
       } else {
 
-        // TODO CREATE SEPARATE ROUTES FOR VISITORS AND OWNER OF THE PROFILE
-        // TODO ===> ONLY PUT A BOOL [isProfileOwner] DANS DATA ET TRIER LES INFOS DANS LE PUG?
+        // * FETCH REQUESTER PROFILE INFOS
+        
 
+        // * SEND DATA BASED ON USER PROFILE
         if (searchedProfile === req.session.userName) {
           data.isProfileOwner = true;
         } else {
           data.isProfileOwner = false;
+
+          // TODO CHECK USER FRIENDS ONLY IF NEEDED
+          // TODO CHECK USER FRIENDS ONLY IF NEEDED
+          // TODO CHECK USER FRIENDS ONLY IF NEEDED
+          // TODO CHECK USER FRIENDS ONLY IF NEEDED
+          // TODO CHECK USER FRIENDS ONLY IF NEEDED
+          
+          // user
+          // .findOne({ username: data.userName })
+          // .exec(function(err, userProfileResult) {
+
+          //   data.isFriend = functions.checkIfSearchedProfileIsFriend(result, searchedProfile);
+
+
+            
+          // });
+
         }
 
-              data.bio      = result.bio;
-          let datePattern   = /(?:\bdigit-|\s|^)(\d{4})(?=[.?\s]|-digit\b|$)/g;
-              data.joinedIn = result.creationDate.toString().match(datePattern)[0].trim();
+        console.log(data.isFriend);
 
-          console.log(data.joinedIn);
 
-          res.status(200).render("profile", {
-            data: data
-          });
+            data.bio      = searchedProfileResult.bio;
+        let datePattern   = /(?:\bdigit-|\s|^)(\d{4})(?=[.?\s]|-digit\b|$)/g;
+            data.joinedIn = searchedProfileResult.creationDate.toString().match(datePattern)[0].trim();
+            data.friends  = searchedProfileResult.friends.confirmed;
+            data.friendsPending = searchedProfileResult.friends.confirmed;
+            data.friendsPending = searchedProfileResult.friends.pending;
+
+        res.status(200).render("profile", {
+          data: data
+        });
       }
     });
 };
@@ -139,30 +163,34 @@ module.exports.follow = function (req, res, next) {
   const userFollowing = req.session.userName;
 
   user
-    .findOneAndUpdate(
+    .updateOne(
       {username: userFollowing},
       { $push:
         {
-          'nested.requested.name': userToFollow
-        }},
+          'friends.requested': userToFollow
+        }
+      },
       function(err, result) {
-        console.log('seems ok');
-        res.send();
+
+        if (err) throw err;
+
+        user
+          .updateOne(
+            {username: userToFollow},
+            { $push:
+              {
+                'friends.pending': userFollowing
+              }
+            },
+            function(err, result) {
+
+              if (err) throw err;
+
+              console.log('seems ok');
+
+              res.send();
+            }
+          );
       }
     );
-
-  user
-    .find({username: userFollowing})
-    .select('username')
-    .exec(function(err, result) {
-
-      if (err) throw err;
-
-      // console.log("retour de query : " + result);
-      // console.log('all users are sent');
-
-      res.send();
-
-    });
-
 };

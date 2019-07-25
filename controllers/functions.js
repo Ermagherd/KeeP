@@ -17,3 +17,15 @@ module.exports.checkUserName = function (req) {
     return req.session.userName;
   }
 };
+
+module.exports.checkIfSearchedProfileIsFriend = function (result, searchedProfile) {
+  console.log('le result est ' + result.friends.requested);
+  console.log('le result searchedProfile ' + searchedProfile);
+  let requested  = result.friends.requested;
+  let unaccepted = result.friends.unaccepted;
+  let accepted   = result.friends.accepted;
+  if (requested !== undefined && requested.includes(searchedProfile)) return 'requested';
+  if (unaccepted !== undefined && unaccepted.includes(searchedProfile)) return 'unaccepted';
+  if (accepted !== undefined && accepted.includes(searchedProfile)) return 'accepted';
+  return false;
+};
