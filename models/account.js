@@ -36,6 +36,11 @@ var userSchema = new Schema({
     {
       type   : Array,
       default: []
+    },
+    accepted :
+    {
+      type   : Array,
+      default: []
     }
   },
   creationDate : { type: Date, default: Date.now() }
