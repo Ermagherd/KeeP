@@ -9,8 +9,6 @@ module.exports.landingPage = function (req, res, next) {
   data.role = functions.checkRole(req);
   data.userName = functions.checkUserName(req);
 
-  console.log('data.role is : ' + data.role);
-
   if (req.session.userName) {
 
     return res.redirect("/profile/" + req.session.userName);

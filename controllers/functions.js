@@ -1,3 +1,7 @@
+const mongoose       = require("mongoose");
+const accountSchemas = require('../models/account');
+const user           = mongoose.model("user", accountSchemas.userSchema);
+
 module.exports.checkRole = function (req) {
   if (!req.session.role) {
     return "v";
@@ -19,8 +23,6 @@ module.exports.checkUserName = function (req) {
 };
 
 module.exports.checkIfSearchedProfileIsFriend = function (result, searchedProfile) {
-  console.log('le result est ' + result.friends.requested);
-  console.log('le result searchedProfile ' + searchedProfile);
   let requested  = result.friends.requested;
   let unaccepted = result.friends.unaccepted;
   let accepted   = result.friends.accepted;
@@ -28,4 +30,11 @@ module.exports.checkIfSearchedProfileIsFriend = function (result, searchedProfil
   if (unaccepted !== undefined && unaccepted.includes(searchedProfile)) return 'unaccepted';
   if (accepted !== undefined && accepted.includes(searchedProfile)) return 'accepted';
   return false;
+};
+
+module.exports.getUserData = async function(searchedProfile) {
+
+  var data = await user.find({username:searchedProfile});
+  return data;
+
 };

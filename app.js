@@ -14,6 +14,7 @@ const express    = require("express");
 const app        = express();
 const http       = require("http").Server(app);
 const conf       = require("./secrets/conf.js");
+const functions  = require('./controllers/functions');
 const routes     = require("./routes");
 const bodyParser = require("body-parser");
 const mongoose   = require("mongoose");
@@ -132,10 +133,13 @@ app.use("/", routes);
 */
 
 app.use(function(req, res, next) {
+  let data = {};
+  data.role            = functions.checkRole(req);
+  data.userName        = functions.checkUserName(req);
   if (res.statusCode == 503) {
-    res.send("Accès non autorisé");
+    res.status(503).render("503", {data: data});
   } else {
-    res.status(404).send("Fichier non trouvé bobby");
+    res.status(404).render("404", {data: data});
   }
 });
 

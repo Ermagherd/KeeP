@@ -115,7 +115,6 @@ module.exports.userLogin = function(req, res, next) {
   // * CHECK DATA VALIDITY AND REDIRECT IF FAILED
 
   const errors = validationResult(req);
-  console.log(errors.array());
 
   if (!errors.isEmpty()) {
     let errorsMessages = "";
@@ -136,7 +135,6 @@ module.exports.userLogin = function(req, res, next) {
   function verifyLogin() {
     user.findOne({ username: username }).exec(function(err, result) {
       if (err) throw err;
-      console.log("result is : " + result);
       if (result != null || result != undefined) {
         var accountPassword = result.password;
         var passwordTest    = bcrypt.compareSync(password, accountPassword);
@@ -258,7 +256,6 @@ module.exports.createUser = function(req, res, next) {
   // * CHECK DATA VALIDITY AND REDIRECT IF FAILED
 
   const errors = validationResult(req);
-  // console.log(errors.array());
 
   if (!errors.isEmpty()) {
     let errorsMessages = "";
@@ -304,19 +301,16 @@ module.exports.createUser = function(req, res, next) {
               userInstance
                 .save()
                 .then(result => {
-                  // console.log(result);
                   req.session.userId   = result._id;
                   req.session.role     = result.role;
                   req.session.userName = result.username;
                   return res.redirect("/");
                 })
                 .catch(function(err) {
-                  // console.log(err);
                 });
             });
           });
         } else {
-          // console.log(result);
           let flashError = "";
           if (result.username === username) {
             flashError = "Username is already used.";

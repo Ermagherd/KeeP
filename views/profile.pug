@@ -1,7 +1,12 @@
 include includes/header.pug
 body
   include includes/nav.pug
-  - var userIsProfileOwner = data.isProfileOwner
+  - var userIsProfileOwner = data.isProfileOwner || false
+  - var friendStatus       = data.friendStatus || ''
+  - var friendsConfirmed   = data.friendsConfirmed || []
+  - var friendsPending     = data.friendsPending || []
+  - var friendsRejected    = data.friendsRejected || []
+  - var friendsCount       = data.friendsCount || 0
   .ui.grid
     //- .stretched.row
     //- PROFILE INFOS
@@ -19,14 +24,30 @@ body
           .extra.content
             a
               i.user.icon
-              | 22 Friends
+              | #{friendsCount}
 
       //- FOLLOW BUTTON
       if !userIsProfileOwner && data.role != 'v'
-        .ui.segment
-          #add-friend.ui.fluid.primary.button
-            i.user.icon
-            | Follow
+        if friendStatus == 'accepted'
+          .ui.segment
+            #add-friend-accepted.ui.fluid.positive.button
+              i.user.icon
+              | Follow
+        else if friendStatus == 'requested'
+          .ui.segment
+            #add-friend-requested.ui.fluid.secondary.button
+              i.user.icon
+              | Follow
+        else if friendStatus == 'unaccepted'
+          .ui.segment
+            #add-friend-unaccepted.ui.fluid.negative.button
+              i.user.icon
+              | Follow
+        else
+          .ui.segment
+            #add-friend.ui.fluid.primary.button
+              i.user.icon
+              | Follow
 
     //- WALL
     .nine.wide.column

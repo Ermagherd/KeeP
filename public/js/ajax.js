@@ -18,8 +18,6 @@ $( document ).ready(function() {
     var text = $("#user-post").val();
     $("#user-post").val("");
 
-    console.log(text);
-
       // $.ajax({
       //   url: "test.html",
       //   context: document.body
@@ -41,7 +39,6 @@ $( document ).ready(function() {
   function fetchUsers () {
     sessionStorage.clear();
     if ( sessionStorage.users == undefined ) {
-      console.log('enter conditon');
 
       function GetString() {
         var keyValue = "";
@@ -66,7 +63,6 @@ $( document ).ready(function() {
         return keyValue;
       }
       var search = GetString();
-      console.log('var search : ' + search);
     }
   }
 
@@ -98,7 +94,6 @@ $( document ).ready(function() {
     }
 
     var research      = $(this).val();
-    console.log(sessionStorage.users);
     var users         = JSON.parse(sessionStorage.users);
     var pattern       = new RegExp(`^${research}`, "i");
     var returnedMatch = [];
@@ -145,7 +140,6 @@ $( document ).ready(function() {
         userToFollow: userToFollow
       },
       success: function (response) {
-        console.log(response);
         $('#add-friend').removeClass('loading');
         $('#add-friend').parent().html(
           '<div class="ui fluid disabled secondary button" id="following"><i class="user icon"></i>Following</div>'
