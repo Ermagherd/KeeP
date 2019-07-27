@@ -130,30 +130,222 @@ $( document ).ready(function() {
   $('#add-friend').click( function () {
 
     $(this).addClass('loading');
-
-    let userToFollow = $('div.header').text();
+    let that = this
+    let userToFollow = $(this).parent().parent().parent().find(".header").text();
 
     $.ajax({
       type: "POST",
-      url: "/profile/follow",
+      url: "/profile/add-friend",
       data : {
         userToFollow: userToFollow
       },
       success: function (response) {
-        $('#add-friend').removeClass('loading');
-        $('#add-friend').parent().html(
-          '<div class="ui fluid disabled secondary button" id="following"><i class="user icon"></i>Following</div>'
+        $(that).removeClass('loading');
+        $(that).parent().html(
+          '<div class="ui fluid disabled secondary button" id="following"><i class="paper plane icon icon"></i>Demander en attente</div>'
         );
       },
       failure: function (response) {
-          console.log("Unable to follow user.");
-          $(this).removeClass('loading');
+          console.log("Unable to send friend request user.");
+          $(that).removeClass('loading');
       }
     });
-
-
-
   });
+
+/*
+.##.....##.##....##.########..#######..##.......##........#######..##......##....########.########..####.########.##....##.########.
+.##.....##.###...##.##.......##.....##.##.......##.......##.....##.##..##..##....##.......##.....##..##..##.......###...##.##.....##
+.##.....##.####..##.##.......##.....##.##.......##.......##.....##.##..##..##....##.......##.....##..##..##.......####..##.##.....##
+.##.....##.##.##.##.######...##.....##.##.......##.......##.....##.##..##..##....######...########...##..######...##.##.##.##.....##
+.##.....##.##..####.##.......##.....##.##.......##.......##.....##.##..##..##....##.......##...##....##..##.......##..####.##.....##
+.##.....##.##...###.##.......##.....##.##.......##.......##.....##.##..##..##....##.......##....##...##..##.......##...###.##.....##
+..#######..##....##.##........#######..########.########..#######...###..###.....##.......##.....##.####.########.##....##.########.
+*/
+
+  $('#remove-friend-accepted').click( function () {
+
+    $(this).addClass('loading');
+    let that = this
+    let userToRemove = $(this).parent().parent().parent().find(".header").text();
+
+    console.log(userToRemove);
+
+    $.ajax({
+      type: "POST",
+      url: "/profile/remove-friend",
+      data : {
+        userToRemove: userToRemove
+      },
+      success: function (response) {
+        console.log(response);
+        $(that).removeClass('loading');
+        $(that).parent().html(
+          '<div class="ui fluid primary button" id="add-friend"><i class="user plus icon"></i>Demander en ami</div>'
+        );
+      },
+      failure: function (response) {
+          console.log("Unable to unfollow user.");
+          $(that).removeClass('loading');
+      }
+    });
+  });
+
+/*
+....###....########..########..########...#######..##.....##.########....########.########..####.########.##....##.########.
+...##.##...##.....##.##.....##.##.....##.##.....##.##.....##.##..........##.......##.....##..##..##.......###...##.##.....##
+..##...##..##.....##.##.....##.##.....##.##.....##.##.....##.##..........##.......##.....##..##..##.......####..##.##.....##
+.##.....##.########..########..########..##.....##.##.....##.######......######...########...##..######...##.##.##.##.....##
+.#########.##........##........##...##...##.....##..##...##..##..........##.......##...##....##..##.......##..####.##.....##
+.##.....##.##........##........##....##..##.....##...##.##...##..........##.......##....##...##..##.......##...###.##.....##
+.##.....##.##........##........##.....##..#######.....###....########....##.......##.....##.####.########.##....##.########.
+*/
+
+$('.approve-friend').click( function () {
+
+  $(this).addClass('loading');
+  console.log('target');
+
+  let that = this;
+  let userToApprove = $(this).parent().parent().parent().find(".header").text();
+
+  $.ajax({
+    type: "POST",
+    url: "/profile/approve-friend",
+    data : {
+      userToApprove: userToApprove
+    },
+    success: function (response) {
+      console.log(response);
+      $(that).removeClass('loading');
+      $(that).parent().parent().parent().remove();
+      $('#friends-cards').find(".ui.cards").append(
+        '<div class="card"><div class="content"><div class="header"><a href="/profile/' + userToApprove + '">' + userToApprove + '</a></div></div><div class="extra content"><div class="ui buttons"><div class="ui basic red button remove-friend">Remove</div></div></div>'
+      );
+    },
+    failure: function (response) {
+        console.log("Unable to approve user.");
+        $(that).removeClass('loading');
+    }
+  });
+});
+
+/*
+.########..########.##.....##..#######..##.....##.########....########.########..####.########.##....##.########.
+.##.....##.##.......###...###.##.....##.##.....##.##..........##.......##.....##..##..##.......###...##.##.....##
+.##.....##.##.......####.####.##.....##.##.....##.##..........##.......##.....##..##..##.......####..##.##.....##
+.########..######...##.###.##.##.....##.##.....##.######......######...########...##..######...##.##.##.##.....##
+.##...##...##.......##.....##.##.....##..##...##..##..........##.......##...##....##..##.......##..####.##.....##
+.##....##..##.......##.....##.##.....##...##.##...##..........##.......##....##...##..##.......##...###.##.....##
+.##.....##.########.##.....##..#######.....###....########....##.......##.....##.####.########.##....##.########.
+*/
+
+$('.remove-friend').click( function () {
+
+  $(this).addClass('loading');
+  console.log('target');
+
+  let that = this;
+  let userToRemove = $(this).parent().parent().parent().find(".header").text();
+
+  console.log(userToRemove);
+
+  $.ajax({
+    type: "POST",
+    url: "/profile/remove-friend",
+    data : {
+      userToRemove: userToRemove
+    },
+    success: function (response) {
+      console.log(response);
+      $(that).removeClass('loading');
+      $(that).parent().parent().parent().remove();
+    },
+    failure: function (response) {
+        console.log("Unable to remove user.");
+        $(that).removeClass('loading');
+    }
+  });
+});
+
+/*
+.########..########..######..##.......####.##....##.########....########.########..####.########.##....##.########.
+.##.....##.##.......##....##.##........##..###...##.##..........##.......##.....##..##..##.......###...##.##.....##
+.##.....##.##.......##.......##........##..####..##.##..........##.......##.....##..##..##.......####..##.##.....##
+.##.....##.######...##.......##........##..##.##.##.######......######...########...##..######...##.##.##.##.....##
+.##.....##.##.......##.......##........##..##..####.##..........##.......##...##....##..##.......##..####.##.....##
+.##.....##.##.......##....##.##........##..##...###.##..........##.......##....##...##..##.......##...###.##.....##
+.########..########..######..########.####.##....##.########....##.......##.....##.####.########.##....##.########.
+*/
+
+$('.decline-friend').click( function () {
+
+  $(this).addClass('loading');
+  console.log('target');
+
+  let that = this;
+  let userToDecline = $(this).parent().parent().parent().find(".header").text();
+
+  console.log(userToDecline);
+
+  $.ajax({
+    type: "POST",
+    url: "/profile/decline-friend",
+    data : {
+      userToDecline: userToDecline
+    },
+    success: function (response) {
+      console.log(response);
+      $(that).removeClass('loading');
+      $(that).parent().parent().parent().remove();
+    },
+    failure: function (response) {
+        console.log("Unable to block user.");
+        $(that).removeClass('loading');
+    }
+  });
+});
+
+/*
+.##.....##.##....##.########..##........#######...######..##....##....########.########..####.########.##....##.########.
+.##.....##.###...##.##.....##.##.......##.....##.##....##.##...##.....##.......##.....##..##..##.......###...##.##.....##
+.##.....##.####..##.##.....##.##.......##.....##.##.......##..##......##.......##.....##..##..##.......####..##.##.....##
+.##.....##.##.##.##.########..##.......##.....##.##.......#####.......######...########...##..######...##.##.##.##.....##
+.##.....##.##..####.##.....##.##.......##.....##.##.......##..##......##.......##...##....##..##.......##..####.##.....##
+.##.....##.##...###.##.....##.##.......##.....##.##....##.##...##.....##.......##....##...##..##.......##...###.##.....##
+..#######..##....##.########..########..#######...######..##....##....##.......##.....##.####.########.##....##.########.
+*/
+
+$('.unblock-friend').click( function () {
+
+  $(this).addClass('loading');
+  console.log('target');
+
+  let that = this;
+  let userToUnblock = $(this).parent().parent().parent().find(".header").text();
+
+  console.log(userToUnblock);
+
+  $.ajax({
+    type: "POST",
+    url: "/profile/unblock-friend",
+    data : {
+      userToUnblock: userToUnblock
+    },
+    success: function (response) {
+      console.log(response);
+      $(that).removeClass('loading');
+      $(that).parent().parent().parent().remove();
+      $('#friends-cards').find(".ui.cards").append(
+        '<div class="card"><div class="content"><div class="header"><a href="/profile/' + userToUnblock + '">' + userToUnblock + '</a></div></div><div class="extra content"><div class="ui buttons"><div class="ui basic red button remove-friend">Remove</div></div></div>'
+      );
+    },
+    failure: function (response) {
+        console.log("Unable to unblock user.");
+        $(that).removeClass('loading');
+    }
+  });
+});
+
 
 /*
 ..######....#######.....########..#######.....########..########...#######..########.####.##.......########
@@ -169,6 +361,22 @@ $( document ).ready(function() {
     onChange: function (value) {
       location.href='/profile/' + value;
     }
+  });
+
+/*
+.########..####..######..########..##..........###....##....##....########.########..####.########.##....##.########...######.
+.##.....##..##..##....##.##.....##.##.........##.##....##..##.....##.......##.....##..##..##.......###...##.##.....##.##....##
+.##.....##..##..##.......##.....##.##........##...##....####......##.......##.....##..##..##.......####..##.##.....##.##......
+.##.....##..##...######..########..##.......##.....##....##.......######...########...##..######...##.##.##.##.....##..######.
+.##.....##..##........##.##........##.......#########....##.......##.......##...##....##..##.......##..####.##.....##.......##
+.##.....##..##..##....##.##........##.......##.....##....##.......##.......##....##...##..##.......##...###.##.....##.##....##
+.########..####..######..##........########.##.....##....##.......##.......##.....##.####.########.##....##.########...######.
+*/
+
+  $('a.display-friends').click(function (e) {
+
+    $('#wallwrapper').toggleClass("hiddenthing");
+    $('#friendswrapper').toggleClass("hiddenthing");
   });
 
 });

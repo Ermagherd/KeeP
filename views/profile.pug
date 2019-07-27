@@ -6,94 +6,142 @@ body
   - var friendsConfirmed   = data.friendsConfirmed || []
   - var friendsPending     = data.friendsPending || []
   - var friendsRejected    = data.friendsRejected || []
+  - var friendsRequested   = data.friendsRequested || []
   - var friendsCount       = data.friendsCount || 0
   .ui.grid
     //- .stretched.row
     //- PROFILE INFOS
     .three.wide.column
-      .ui.segment
-        .ui.card
-          .image
-            img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
-          .content
-            .header #{data.searchedProfile}
-            .meta
-              span.date Joined in #{data.joinedIn}
-            .description
-              | #{data.bio}
-          .extra.content
-            a
-              i.user.icon
-              | #{friendsCount}
+      .profilewrapper
+        .ui.segment
+          .ui.card
+            .image
+              img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
+            .content
+              .header #{data.searchedProfile}
+              .meta
+                span.date Joined in #{data.joinedIn}
+              .description
+                | #{data.bio}
+            .extra.content
+              a.display-friends
+                i.user.icon
+                | #{friendsCount} / Afficher les amis
 
-      //- FOLLOW BUTTON
-      if !userIsProfileOwner && data.role != 'v'
-        if friendStatus == 'accepted'
-          .ui.segment
-            #add-friend-accepted.ui.fluid.positive.button
-              i.user.icon
-              | Follow
-        else if friendStatus == 'requested'
-          .ui.segment
-            #add-friend-requested.ui.fluid.secondary.button
-              i.user.icon
-              | Follow
-        else if friendStatus == 'unaccepted'
-          .ui.segment
-            #add-friend-unaccepted.ui.fluid.negative.button
-              i.user.icon
-              | Follow
-        else
-          .ui.segment
-            #add-friend.ui.fluid.primary.button
-              i.user.icon
-              | Follow
+        //- FOLLOW BUTTON
+        if !userIsProfileOwner && data.role != 'v'
+          if friendStatus == 'confirmed'
+            .ui.segment
+              #remove-friend-accepted.ui.fluid.positive.button
+                i.user.times.icon
+                | Supprimer des amis
+          else if friendStatus == 'requested'
+            .ui.segment
+              #add-friend-requested.ui.fluid.disabled.secondary.button
+                i.paper.plane.icon
+                | Demande en attente
+          else if friendStatus == 'unaccepted'
+            .ui.segment
+              #add-friend-unaccepted.ui.fluid.disabled.negative.button
+                i.user.secret.icon
+                |
+          else
+            .ui.segment
+              #add-friend.ui.fluid.primary.button
+                i.user.plus.icon
+                | Demander en ami
 
     //- WALL
-    .nine.wide.column
-      if userIsProfileOwner
+    .nine.wide.column.hidden
+      #wallwrapper
+        //- POST FORM
+        if userIsProfileOwner
+          .ui.segment
+            form.ui.form.user-post(action="/account/login" name='user-post-form')
+              .field
+                .ui.user-post.input
+                  textarea#user-post(name='user-post', row="1", cols="33")
+                    | What do you want to share ?
+              #post-submit.ui.primary.submit.button Submit
+        //- POSTS
         .ui.segment
-          form.ui.form.user-post(action="/account/login" name='user-post-form')
-            .field
-              .ui.user-post.input
-                textarea#user-post(name='user-post', row="1", cols="33")
-                  | What do you want to share ?
-            #post-submit.ui.primary.submit.button Submit
-      .ui.segment
-        .ui.items
-          .item
-            .image
-              img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
-            .content
-              //- a.header Header
-              //- .meta
-                span Description
-              .description
-                p Here is the description
-              //- .extra
-                | Additional Details
-      .ui.segment
-        .ui.items
-          .item
-            .image
-              img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
-            .content
-              //- a.header Header
-              //- .meta
-                span Description
-              .description
-                p Here is the description
-              //- .extra
-                | Additional Details
-      .ui.segment
-        | 2
+          .ui.items
+            .item
+              .image
+                img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
+              .content
+                //- a.header Header
+                //- .meta
+                  span Description
+                .description
+                  p Here is the description
+                //- .extra
+                  | Additional Details
+      
+      #friendswrapper.hiddenthing
+        .ui.segment#friends-cards
+          h3 Amis
+          .ui.cards
+            each card in friendsConfirmed
+              .card
+                .content
+                  //- img.right.floated.mini.ui.image(src='/images/avatar/large/elliot.jpg')
+                  .header
+                    a(href='/profile/' + card) #{card}
+                if userIsProfileOwner
+                  .extra.content
+                    .ui.buttons
+                      .ui.negative.button.remove-friend Remove
+        if userIsProfileOwner
+          .ui.segment#pending-friends-cards
+            h3 En attente d'acceptation
+            .ui.cards
+              each card in friendsPending
+                .card
+                  .content
+                    //- img.right.floated.mini.ui.image(src='/images/avatar/large/elliot.jpg')
+                    .header
+                      a(href='/profile/' + card) #{card}
+                    if userIsProfileOwner
+                      .description
+                        | #{card} requested permission to be your friend
+                  if userIsProfileOwner
+                    .extra.content
+                      .ui.two.buttons
+                        .ui.primary.button.approve-friend Approve
+                        .ui.black.button.decline-friend Block
+        if userIsProfileOwner
+          .ui.segment#requested-friends-cards
+            h3 Vos demandes d'amis
+            .ui.cards
+              each card in friendsRequested
+                .card
+                  .content
+                    //- img.right.floated.mini.ui.image(src='/images/avatar/large/elliot.jpg')
+                    .header
+                      a(href='/profile/' + card) #{card}
+        if userIsProfileOwner
+          .ui.segment#requested-friends-cards
+            h3 Utilisateurs bloqués
+            .ui.cards
+              each card in friendsRejected
+                .card
+                  .content
+                    //- img.right.floated.mini.ui.image(src='/images/avatar/large/elliot.jpg')
+                    .header
+                      a(href='/profile/' + card) #{card}
+                  if userIsProfileOwner
+                    .extra.content
+                      .ui.buttons
+                        .ui.primary.button.unblock-friend Unblock and add friend
 
     //- FEED
     .four.wide.column
-      .ui.segment
-        | 1
-      .ui.segment
-        | 2
-      .ui.segment
-        | 3
+      .feedwrapper
+        .ui.segment
+          | 1
+        .ui.segment
+          | 2
+        .ui.segment
+          | 3
 

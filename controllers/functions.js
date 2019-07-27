@@ -23,12 +23,12 @@ module.exports.checkUserName = function (req) {
 };
 
 module.exports.checkIfSearchedProfileIsFriend = function (result, searchedProfile) {
-  let requested  = result.friends.requested;
-  let unaccepted = result.friends.unaccepted;
-  let accepted   = result.friends.accepted;
+  let requested  = result.friends.requested || [];
+  let unaccepted = result.friends.unaccepted || [];
+  let confirmed  = result.friends.confirmed || [];
   if (requested !== undefined && requested.includes(searchedProfile)) return 'requested';
   if (unaccepted !== undefined && unaccepted.includes(searchedProfile)) return 'unaccepted';
-  if (accepted !== undefined && accepted.includes(searchedProfile)) return 'accepted';
+  if (confirmed !== undefined && confirmed.includes(searchedProfile)) return 'confirmed';
   return false;
 };
 
@@ -37,4 +37,31 @@ module.exports.getUserData = async function(searchedProfile) {
   var data = await user.find({username:searchedProfile});
   return data;
 
+};
+
+module.exports.pullUpdateFriendArray = function(searchedProfile, pattern) {
+
+  user
+  .updateOne(
+    {username: searchedProfile},
+    { $pull:
+      pattern
+    }
+  ).exec(function (){
+    console.log('pull de ' + searchedProfile);
+  });
+};
+
+module.exports.pushUpdateFriendArray = function(searchedProfile, pattern) {
+
+  user
+  .updateOne(
+    {username: searchedProfile},
+    { $push:
+      pattern
+    }
+  ).
+  exec(function (){
+    console.log('push de ' + searchedProfile);
+  });
 };
