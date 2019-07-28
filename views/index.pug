@@ -3,17 +3,50 @@ include includes/header.pug
 body
   include includes/nav.pug
 
-  h1 Welcome on Index Page!
-
-  section
-  form.ui.form.login.segment(method='POST' action="/account/login" name='login-form')
-    p Enter your login informations
-    .two.fields
-      .field
-        label Email
-        input(type='email' name='email')
-      .field
-        label Password
-        input(type='password' name='password')
-    .ui.primary.submit.button Submit
-    .ui.error.message
+  section.accueil
+    .ui.middle.aligned.center.aligned.grid
+      .column
+        h1 Bienvenue sur KeeP !
+        #home-links
+          #warningMessage
+          if (typeof message !== 'undefined')
+            p= message
+          p Si vous poss&eacute;dez d&eacute;j&agrave; un compte, vous pouvez vous connecter ici
+          form.ui.grid.form.login(method='POST' action="/account/login" name='login-form')
+            .stretched.row
+              .three.wide.column
+              .five.wide.column
+                    .ui.left.icon.input
+                      i.user.icon
+                      input(type='username', name='username', placeholder='Username')
+              .five.wide.column
+                    .ui.left.icon.input
+                      i.lock.icon
+                      input(type='password', name='password', placeholder='Password')
+              .three.wide.column
+            .stretched.row
+              .six.wide.column
+              .four.wide.column
+                .ui.primary.submit.button Submit
+              .six.wide.column
+          br
+          p Sinon, vous pouvez rejoindre KeeP en suivant ce lien
+          a(href='/account/signup')
+            .ui.animated.button(tabindex='0')
+              .visible.content Créer un compte
+              .hidden.content
+                i.right.arrow.icon
+        br
+        #home-stat
+          .ui.labeled.button(tabindex='0')
+            .ui.blue.button
+              i.user.icon
+              |  Utilisateurs connectés
+            a.ui.basic.blue.left.pointing.label
+              | 1,048
+          .ui.labeled.button(tabindex='0')
+            .ui.blue.button
+              i.paper.plane.icon
+              |  Messages envoyés
+            a.ui.basic.blue.left.pointing.label
+              | 1,048

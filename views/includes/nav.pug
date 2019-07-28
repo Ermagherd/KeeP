@@ -1,10 +1,28 @@
-.ui.inverted.segment
+.ui.inverted.segment.navbar
   .ui.inverted.secondary.menu
-    a.active.item(href='/')
-      | Home
-    a.item(href='/account/signup')
-      | Register
-    - var userIsAdmin = data.admin || false
-    if userIsAdmin
-      a.item
+    a(href='/')
+      img.item(src='/img/logos/logo_keep.png')
+    - var userRole = data.role || 'v'
+    - var userName = data.userName
+    if (userRole == 'v')
+      a.item(href='/account/login')
+        | Login
+    if (userRole == 'v')
+      a.item(href='/account/signup')
+        | Register
+    if (userRole == 'a')
+      a.item(href='/dashboard')
         | Admin Panel
+    unless (userName == false)
+      a.item(href='/profile/' + userName)
+        span.username
+          i.user.icon
+          span= userName
+    if (userRole == 'u' || userRole == 'a')
+      a.item.role(href='/account/logout')
+        i.power.off.icon
+        span logout
+    select#user-search.ui.fluid.search.dropdown.item(name='user-search')
+      option(value='') Search a profile
+    a.item(href='/about')
+      | About Keep

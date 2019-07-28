@@ -1,0 +1,15 @@
+doctype html
+include includes/header.pug
+body
+  include includes/nav.pug
+
+  .ui.grid
+    .stretched.row
+      .three.wide.column
+      .ten.wide.column
+        h1
+          i.search.icon 
+          | 404
+        - if (userName == false) userName = 'anonyme citoyen'
+          p.ui.segment Désolé #{userName}. On a bien cherché partout, mais...
+      .three.wide.column
