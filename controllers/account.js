@@ -34,7 +34,10 @@ const Schema   = mongoose.Schema;
 // });
 
 const accountSchemas = require('../models/account');
-const user = mongoose.model("user", accountSchemas.userSchema);
+const user           = mongoose.model("user", accountSchemas.userSchema);
+const poster         = mongoose.model("poster", accountSchemas.posterSchema);
+const post           = mongoose.model("post", accountSchemas.postSchema);
+const comment        = mongoose.model("comment", accountSchemas.commentSchema);
 
 /*
 .########...######..########..##....##.########..########
@@ -304,9 +307,41 @@ module.exports.createUser = function(req, res, next) {
                   req.session.userId   = result._id;
                   req.session.role     = result.role;
                   req.session.userName = result.username;
-                  return res.redirect("/");
+
+                  // !!! NEW HERE
+                  // !!! NEW HERE
+                  // !!! NEW HERE
+
+                  poster
+                    .findOne( { username: username } )
+                    .exec(function(err, resultPoster) {
+                      if (err) throw err;
+                      if (resultPoster === [] || resultPoster === null || resultPoster === undefined) {
+                        // * SAVE NEW USER
+                        var posterInstance = new poster({
+                          ownerUserName: username,
+                        });
+
+                        posterInstance
+                          .save()
+                          .then(resultPoster => {
+                            console.log(resultPoster);
+                            return res.redirect("/");
+                          })
+                          .catch(function(err) {
+                            console.log(err);
+                          });
+                      }
+                    });
+
+                  // !!! NEW HERE
+                  // !!! NEW HERE
+                  // !!! NEW HERE
+
+                  // return res.redirect("/");
                 })
                 .catch(function(err) {
+                  console.log(err);
                 });
             });
           });

@@ -53,8 +53,6 @@ module.exports.profilePage = function(req, res, next) {
 
     let searchedProfile = req.params.profile;
     let userName = functions.checkUserName(req);
-    // console.log('userName is : ' + userName);
-    // console.log('searchedProfile search is : ' + searchedProfile);
 
     let data                 = {};
         data.role            = functions.checkRole(req);
@@ -69,28 +67,34 @@ module.exports.profilePage = function(req, res, next) {
     }
 
     // * FETCH REQUESTED PROFILE INFOS
-    promise = functions.getUserData(searchedProfile)
+    functions.getUserData(searchedProfile)
     .then(async function (returned) {
 
-      let searchedProfileResult;
-      searchedProfileResult = returned[0];
-      console.log(searchedProfileResult);
+      // console.log(returned);
+
+      // let searchedProfileResult;
+      let searchedProfileResult = returned.data[0];
+      let profileMessages = functions.preparePosts(returned.messages);
+      // console.log(returned.messages);
 
       // * FETCH REQUESTER PROFILE INFOS
       if (!data.isProfileOwner && data.role != 'v') {
         let userProfileResult = await functions.getUserData(userName);
-        data.friendStatus = functions.checkIfSearchedProfileIsFriend(userProfileResult[0], searchedProfile);
+        data.friendStatus = functions.checkIfSearchedProfileIsFriend(userProfileResult.data[0], searchedProfile);
       }
 
-      let datePattern           = /(?:\bdigit-|\s|^)(\d{4})(?=[.?\s]|-digit\b|$)/g;
+      let datePattern           = /(\d{4})/g;
           data.bio              = searchedProfileResult.bio || '';
-          data.joinedIn         = searchedProfileResult.creationDate.toString().match(datePattern)[0].trim() || '00/00/0000';
+          data.joinedIn         = searchedProfileResult.creationDate.toString().match(datePattern)[0].trim() || '00-00-0000';
           data.friendsConfirmed = searchedProfileResult.friends.confirmed || [];
           data.friendsPending   = searchedProfileResult.friends.pending || [];
           data.friendsRejected  = searchedProfileResult.friends.rejected || [];
           data.friendsRequested = searchedProfileResult.friends.requested || [];
           data.friendsCount     = Object.keys(data.friendsConfirmed).length - 1 || 0;
-
+          data.messages         = profileMessages;
+          console.log(searchedProfileResult.creationDate);
+          // console.log(data.joinedIn);
+          
       res.status(200).render("profile", {
         data: data
       });
@@ -101,6 +105,40 @@ module.exports.profilePage = function(req, res, next) {
       res.status(503);
       next();
     });
+
+    // // * FETCH REQUESTED PROFILE INFOS
+    // functions.getUserData(searchedProfile)
+    // .then(async function (returned) {
+
+    //   let searchedProfileResult;
+    //   searchedProfileResult = returned[0];
+    //   console.log(searchedProfileResult);
+
+    //   // * FETCH REQUESTER PROFILE INFOS
+    //   if (!data.isProfileOwner && data.role != 'v') {
+    //     let userProfileResult = await functions.getUserData(userName);
+    //     data.friendStatus = functions.checkIfSearchedProfileIsFriend(userProfileResult[0], searchedProfile);
+    //   }
+
+    //   let datePattern           = /(?:\bdigit-|\s|^)(\d{4})(?=[.?\s]|-digit\b|$)/g;
+    //       data.bio              = searchedProfileResult.bio || '';
+    //       data.joinedIn         = searchedProfileResult.creationDate.toString().match(datePattern)[0].trim() || '00/00/0000';
+    //       data.friendsConfirmed = searchedProfileResult.friends.confirmed || [];
+    //       data.friendsPending   = searchedProfileResult.friends.pending || [];
+    //       data.friendsRejected  = searchedProfileResult.friends.rejected || [];
+    //       data.friendsRequested = searchedProfileResult.friends.requested || [];
+    //       data.friendsCount     = Object.keys(data.friendsConfirmed).length - 1 || 0;
+
+    //   res.status(200).render("profile", {
+    //     data: data
+    //   });
+
+    // })
+    // .catch(function (err){
+    //   console.log('dis errer is : ' + err);
+    //   res.status(503);
+    //   next();
+    // });
 
 };
 
@@ -369,4 +407,27 @@ module.exports.unblock_friend = function (req, res, next) {
     });
   }
   declineFriend ();
+};
+
+/*
+.########...#######...######..########.....######...#######..##.....##.##.....##.########.##....##.########
+.##.....##.##.....##.##....##....##.......##....##.##.....##.###...###.###...###.##.......###...##....##...
+.##.....##.##.....##.##..........##.......##.......##.....##.####.####.####.####.##.......####..##....##...
+.########..##.....##..######.....##.......##.......##.....##.##.###.##.##.###.##.######...##.##.##....##...
+.##........##.....##.......##....##.......##.......##.....##.##.....##.##.....##.##.......##..####....##...
+.##........##.....##.##....##....##.......##....##.##.....##.##.....##.##.....##.##.......##...###....##...
+.##.........#######...######.....##........######...#######..##.....##.##.....##.########.##....##....##...
+*/
+
+module.exports.post_comment = function (req, res, next) {
+
+  const { content } = req.body;
+  const user = req.session.userName;
+
+  console.log('launch function');
+
+  functions.pushPost(user, content);
+
+  res.send(user);
+
 };

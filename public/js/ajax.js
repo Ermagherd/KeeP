@@ -3,31 +3,6 @@
 $( document ).ready(function() {
 
 /*
-.##.....##..######..########.########.....########...#######...######..########
-.##.....##.##....##.##.......##.....##....##.....##.##.....##.##....##....##...
-.##.....##.##.......##.......##.....##....##.....##.##.....##.##..........##...
-.##.....##..######..######...########.....########..##.....##..######.....##...
-.##.....##.......##.##.......##...##......##........##.....##.......##....##...
-.##.....##.##....##.##.......##....##.....##........##.....##.##....##....##...
-..#######...######..########.##.....##....##.........#######...######.....##...
-*/
-
-  $("#post-submit").click(function(e){
-
-    e.preventDefault();
-    var text = $("#user-post").val();
-    $("#user-post").val("");
-
-      // $.ajax({
-      //   url: "test.html",
-      //   context: document.body
-      // }).done(function() {
-      //   $( this ).addClass( "done" );
-      // });
-
-  });
-
-/*
 .##.....##..######..########.########......######..########....###....########...######..##.....##
 .##.....##.##....##.##.......##.....##....##....##.##.........##.##...##.....##.##....##.##.....##
 .##.....##.##.......##.......##.....##....##.......##........##...##..##.....##.##.......##.....##
@@ -219,7 +194,7 @@ $('.approve-friend').click( function () {
       $(that).removeClass('loading');
       $(that).parent().parent().parent().remove();
       $('#friends-cards').find(".ui.cards").append(
-        '<div class="card"><div class="content"><div class="header"><a href="/profile/' + userToApprove + '">' + userToApprove + '</a></div></div><div class="extra content"><div class="ui buttons"><div class="ui basic red button remove-friend">Remove</div></div></div>'
+        '<div class="card"><div class="content"><div class="header"><a href="/profile/' + userToApprove + '">' + userToApprove + '</a></div></div><div class="extra content"><div class="ui buttons"><div class="ui negative button remove-friend">Remove</div></div></div>'
       );
     },
     failure: function (response) {
@@ -344,6 +319,58 @@ $('.unblock-friend').click( function () {
         $(that).removeClass('loading');
     }
   });
+});
+
+/*
+.########...#######...######..########
+.##.....##.##.....##.##....##....##...
+.##.....##.##.....##.##..........##...
+.########..##.....##..######.....##...
+.##........##.....##.......##....##...
+.##........##.....##.##....##....##...
+.##.........#######...######.....##...
+*/
+
+$("#user-post").click( function () {
+
+  let text = $(this).text();
+  let placeHolder = 'What do you want to share ?';
+  if (text === placeHolder) {
+    let text = $(this).text('');
+    console.log(text);
+  }
+
+})
+
+$('#post-submit').click( function (e) {
+
+  let that = this;
+  let placeHolder = 'What do you want to share ?';
+  $(that).addClass('loading');
+  let content = $('#user-post').val();
+  console.log(content);
+
+  $.ajax({
+    type: "POST",
+    url: "/profile/post-comment",
+    data : {
+      content: content
+    },
+    success: function (response) {
+      console.log(response);
+      $(that).removeClass('loading');
+      // $(that).parent().parent().parent().remove();
+      // $('#friends-cards').find(".ui.cards").append(
+      //   '<div class="card"><div class="content"><div class="header"><a href="/profile/' + userToUnblock + '">' + userToUnblock + '</a></div></div><div class="extra content"><div class="ui buttons"><div class="ui basic red button remove-friend">Remove</div></div></div>'
+      // );
+      $('#user-post').val(placeHolder);
+    },
+    failure: function (response) {
+        console.log("Unable to post comment.");
+        $(that).removeClass('loading');
+    }
+  });
+
 });
 
 

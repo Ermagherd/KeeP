@@ -30,6 +30,10 @@ router
   .route("/unblock-friend")
   .post(profileController.unblock_friend);
 
+  router
+  .route("/post-comment")
+  .post(profileController.post_comment);
+
 router
   .route("/:profile")
   .get(profileController.profilePage);
