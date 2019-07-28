@@ -65,24 +65,28 @@ body
                     | What do you want to share ?
               #post-submit.ui.primary.button Submit
         //- POSTS
-        each post in profileMessages
-          .ui.segment(id='' + post._id)
-            .ui.items
-              .item
-                .image
-                  img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
-                .content
-                  a.header(href='/profile/' + post.username) #{post.username}
-                  .meta
-                    span #{post.creationDate}
-                  .description
-                    p #{post.content}
-                  if userIsProfileOwner || data.role == 'a'
-                    .extra
-                      button.ui.compact.icon.negative.button.right.floated.delete-post
-                        i.trash.icon
-                      //- button.ui.compact.icon.primary.button.right.floated.edit-post
-                        i.edit.icon
+        #post-wrapper
+          each post in profileMessages
+            .ui.segment(id='' + post._id)
+              .ui.items
+                .item
+                  .image
+                    img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
+                  .content
+                    a.header(href='/profile/' + post.username) #{post.username}
+                    .meta
+                      span #{post.creationDate}
+                    .description
+                      p #{post.content}
+                    if userIsProfileOwner || data.role == 'a'
+                      .extra
+                        button.ui.compact.icon.negative.button.right.floated.delete-post
+                          i.trash.icon
+                        //- button.ui.compact.icon.primary.button.right.floated.edit-post
+                          i.edit.icon
+
+          .ui.large.centered.inline.text.loader
+            | Adding more content...
 
       #friendswrapper.hiddenthing
         .ui.segment#friends-cards
@@ -143,11 +147,25 @@ body
 
     //- FEED
     .four.wide.column
-      .feedwrapper
-        .ui.segment
-          | 1
-        .ui.segment
-          | 2
-        .ui.segment
-          | 3
+      if userIsProfileOwner
+        .feedwrapper
+          .ui.segment
+            .ui.vertical.fluid.menu
+              a.teal.item
+                | Inbox
+                .ui.teal.left.pointing.label 1
+              a.item
+                | Spam
+                .ui.label 51
+              a.item
+                | Updates
+                .ui.label 1
+              .item
+                .ui.transparent.icon.input
+                  input(type='text', placeholder='Search mail...')
+                  i.search.icon
+          //- .ui.segment
+          //-   | 2
+          //- .ui.segment
+          //-   | 3
 
