@@ -404,6 +404,50 @@ $('#post-submit').click( function (e) {
 
     $('#wallwrapper').toggleClass("hiddenthing");
     $('#friendswrapper').toggleClass("hiddenthing");
+
   });
+
+
+
+  var count = 1;
+  window.loadMorePost = function() {
+    // load fake content
+    var
+      $segment = $('#post-wrapper'),
+      $loader  = $segment.find('.inline.loader'),
+      $content = $('<h3 class="ui header">Loaded Content #' + count + '</h3><img class="ui wireframe image" src="/images/wireframe/paragraph.png"><img class="ui wireframe image" src="/images/wireframe/paragraph.png"><img class="ui wireframe image" src="/images/wireframe/paragraph.png">')
+    ;
+    if(count <= 5) {
+      $loader.addClass('active');
+      setTimeout(function() {
+        $loader
+          .removeClass('active')
+          .before($content)
+        ;
+        $('.ui.sticky')
+          .sticky('refresh')
+        ;
+        $('.visibility.example > .overlay, .visibility.example > .demo.segment, .visibility.example .items img')
+          .visibility('refresh')
+        ;
+      }, 1000);
+    }
+    count++;
+  }
+
+  $('#post-wrapper')
+  .visibility({
+    once: false,
+    // update size when new content loads
+    observeChanges: true,
+    // load content on bottom edge visible
+    onBottomVisible: function() {
+
+      // loads a max of 5 times
+      // window.loadFakeContent();
+      // window.loadMorePost();
+    }
+  });
+
 
 });
