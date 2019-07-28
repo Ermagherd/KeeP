@@ -111,6 +111,9 @@ $( document ).ready(function() {
     $.ajax({
       type: "POST",
       url: "/profile/add-friend",
+      xhrFields: {
+        withCredentials: true
+      },
       data : {
         userToFollow: userToFollow
       },
@@ -147,6 +150,9 @@ $( document ).ready(function() {
 
     $.ajax({
       type: "POST",
+      xhrFields: {
+        withCredentials: true
+      },
       url: "/profile/remove-friend",
       data : {
         userToRemove: userToRemove
@@ -185,6 +191,9 @@ $('.approve-friend').click( function () {
 
   $.ajax({
     type: "POST",
+    xhrFields: {
+      withCredentials: true
+    },
     url: "/profile/approve-friend",
     data : {
       userToApprove: userToApprove
@@ -226,6 +235,9 @@ $('.remove-friend').click( function () {
 
   $.ajax({
     type: "POST",
+    xhrFields: {
+      withCredentials: true
+    },
     url: "/profile/remove-friend",
     data : {
       userToRemove: userToRemove
@@ -264,6 +276,9 @@ $('.decline-friend').click( function () {
 
   $.ajax({
     type: "POST",
+    xhrFields: {
+      withCredentials: true
+    },
     url: "/profile/decline-friend",
     data : {
       userToDecline: userToDecline
@@ -302,6 +317,9 @@ $('.unblock-friend').click( function () {
 
   $.ajax({
     type: "POST",
+    xhrFields: {
+      withCredentials: true
+    },
     url: "/profile/unblock-friend",
     data : {
       userToUnblock: userToUnblock
@@ -352,6 +370,9 @@ $('#post-submit').click( function (e) {
 
   $.ajax({
     type: "POST",
+    xhrFields: {
+      withCredentials: true
+    },
     url: "/profile/post-comment",
     data : {
       content: content
