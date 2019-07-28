@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "./node_modules/.bin/env-cmd -f .env nodemon app.js",
     "start": "node app.js",
+    "build": "gulp",
     "heroku-prebuild": "export NPM_CONFIG_PRODUCTION=false; export NODE_ENV=; NPM_CONFIG_PRODUCTION=false NODE_ENV=development npm install --only=dev --dev",
     "heroku-postbuild": "export NPM_CONFIG_PRODUCTION=true; export NODE_ENV=production;"
   },
@@ -32,12 +33,12 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "express-validator": "^6.1.1",
+    "gulp": "^4.0.2",
     "io": "^1.0.0",
     "mongodb": "^3.2.7",
     "mongoose": "^5.6.4",
     "nodemon": "^1.19.1",
-    "pug": "^2.0.4",
-    "semantic-ui": "^2.4.2"
+    "pug": "^2.0.4"
   },
   "devDependencies": {}
 }
