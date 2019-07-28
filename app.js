@@ -68,6 +68,7 @@ app.use("/vendor", express.static(__dirname + "/public/vendor"));
 app.set("view engine", "pug");
 app.use(flash());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.set('trust proxy', true);
 
 /*
 ..######..########..######...######..####..#######..##....##..######.
@@ -90,6 +91,7 @@ app.use(
       secure: IN_PROD
     },
     secret: SESS_SECRET,
+    proxy: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection })
   })
 );
