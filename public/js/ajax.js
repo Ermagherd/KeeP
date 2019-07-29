@@ -351,30 +351,46 @@ $('body').on( 'click', '#post-submit', function (e) {
   $(that).addClass('loading');
   let content = $('#user-post').val();
 
-  $.ajax({
-    type: "POST",
-    xhrFields: {
-      withCredentials: true
-    },
-    url: "/profile/post-comment",
-    data : {
-      content: content
-    },
-    success: function (response) {
-      console.log(response);
-      $(that).removeClass('loading');
-      var post = response[0];
+  if (content.length <= 0) {
 
-      var newPost = '<div class="ui segment" id="' + post._id + '"><div class="ui items"><div class="item"><div class="image"><img src="https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724"></div><div class="content"><a class="header" href="/profile/' + post.username + '">' + post.username + '</a><div class="meta"><span>' + post.creationDate + '</span></div><div class="description"><p>' + post.content + '</p></div><div class="extra"><button class="ui compact icon negative button right floated delete-post"><i class="trash icon"></i></button></div></div></div></div></div>';
+    $('#empty-post.ui.basic.modal')
+    .modal('show')
+    ;
+    $(that).removeClass('loading');
 
-      $("#post-wrapper").prepend(newPost)
-      $('#user-post').val(placeHolder);
-    },
-    failure: function (response) {
-        console.log("Unable to post comment.");
+  } else {
+
+    $.ajax({
+      type: "POST",
+      xhrFields: {
+        withCredentials: true
+      },
+      url: "/profile/post-comment",
+      data : {
+        content: content
+      },
+      success: function (response) {
+
         $(that).removeClass('loading');
-    }
-  });
+
+        if (response === 'empty') {
+          // alert('votre message est vide');
+        } else {
+
+          var post = response[0];
+          var newPost = '<div class="ui segment" id="' + post._id + '"><div class="ui items"><div class="item"><div class="image"><img src="https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724"></div><div class="content"><a class="header" href="/profile/' + post.username + '">' + post.username + '</a><div class="meta"><span>' + post.creationDate + '</span></div><div class="description"><p>' + post.content + '</p></div><div class="extra"><button class="ui compact icon negative button right floated delete-post"><i class="trash icon"></i></button></div></div></div></div></div>';
+          // $("#post-wrapper").prepend(newPost);
+          $(newPost).prependTo("#post-wrapper").hide().show('slow');
+          $('#user-post').val(placeHolder);
+
+        }
+      },
+      failure: function (response) {
+          console.log("Unable to post comment.");
+          $(that).removeClass('loading');
+      }
+    });
+  }
 });
 
 /*
@@ -390,7 +406,7 @@ $('body').on( 'click', '#post-submit', function (e) {
 $('body').on( 'click', '.delete-post', function (e) {
 
   var that = e.currentTarget;
-  $('.ui.basic.modal')
+  $('#delete-post.ui.basic.modal')
   .modal('show')
   ;
 
@@ -411,7 +427,7 @@ $('body').on( 'click', '.delete-post', function (e) {
       success: function (response) {
         $(that).removeClass('loading');
         if (response === 'post delete') {
-          $(that).parents('.ui.segment').remove();
+          $(that).parents('.ui.segment').hide('slow', function(){ $(that).parents('.ui.segment').remove(); });
         }
       },
       failure: function (response) {

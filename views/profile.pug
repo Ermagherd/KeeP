@@ -55,7 +55,19 @@ body
     //- WALL
     .nine.wide.column.hidden
       #wallwrapper
+
+        //- UPLOAD IMAGE FORM
+        if userIsProfileOwner
+          .ui.segment
+            form.ui.form.user-post(action="/profile/upload-file" method="POST" name='image-upload' enctype="multipart/form-data")
+              .field
+                .ui.user-post.input
+                  input#upload-file-input(type='file', name='file-upload', placeholder='Upload Image')
+              button#upload-file-button.ui.primary.button(type='submit') Upload
+
+
         //- POST FORM
+        include includes/empty-post-modal.pug
         if userIsProfileOwner
           .ui.segment
             form.ui.form.user-post(action="/account/login" name='user-post-form')

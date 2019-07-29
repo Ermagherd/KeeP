@@ -35,6 +35,13 @@ const {
   }             = process.env;
 const IN_PROD = NODE_ENV === "production";
 
+const path = require('path');
+const crypto = require('crypto');
+const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const methodOverride = require('method-override');
+
 /*
 .##.....##..#######..##....##..######....#######...#######...######..########
 .###...###.##.....##.###...##.##....##..##.....##.##.....##.##....##.##......
@@ -68,6 +75,7 @@ app.use("/vendor", express.static(__dirname + "/public/vendor"));
 app.set("view engine", "pug");
 app.use(flash());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(methodOverride('_method'))
 app.set('trust proxy', true);
 
 /*
@@ -96,6 +104,50 @@ app.use(
   })
 );
 
+/*
+.##.....##.##.....##.##.......########.########.########.
+.###...###.##.....##.##..........##....##.......##.....##
+.####.####.##.....##.##..........##....##.......##.....##
+.##.###.##.##.....##.##..........##....######...########.
+.##.....##.##.....##.##..........##....##.......##...##..
+.##.....##.##.....##.##..........##....##.......##....##.
+.##.....##..#######..########....##....########.##.....##
+*/
+
+// gfs Init
+
+// var conn = mongoose.createConnection(DB_CONN);
+
+// conn.once('open', () => {
+//   var gfs = Grid(conn.db, mongoose.mongo);
+//   gfs.collection('uploads');
+// })
+
+// // Storage Engine
+
+// const storage = new GridFsStorage({
+//   url: DB_CONN,
+//   file: (req, file) => {
+//     return new Promise((resolve, reject) => {
+//       crypto.randomBytes(16, (err, buf) => {
+//         if (err) {
+//           return reject(err);
+//         }
+//         const filename = buf.toString('hex') + path.extname(file.originalname);
+//         const fileInfo = {
+//           filename: filename,
+//           bucketName: 'uploads'
+//         };
+//         resolve(fileInfo);
+//       });
+//     });
+//   }
+// });
+// const upload = multer({ storage });
+
+// app.post('/upload', upload.single('file-upload'), (req, res) => {
+//   res.json({ file: req.file });
+// })
 /*
 .########...#######..##.....##.########.########..######.
 .##.....##.##.....##.##.....##....##....##.......##....##
