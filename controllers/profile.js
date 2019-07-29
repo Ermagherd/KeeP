@@ -21,9 +21,12 @@ const { check, body, validationResult } = require("express-validator");
 .##.....##.##.....##.##...###.##....##..##.....##.##.....##.##....##.##......
 .##.....##..#######..##....##..######....#######...#######...######..########
 */
-const mongoose = require("mongoose");
+const mongoose       = require("mongoose");
 const accountSchemas = require('../models/account');
-const user = mongoose.model("user", accountSchemas.userSchema);
+const user           = mongoose.model("user", accountSchemas.userSchema);
+const poster         = mongoose.model("poster", accountSchemas.posterSchema);
+const post           = mongoose.model("post", accountSchemas.postSchema);
+const comment        = mongoose.model("comment", accountSchemas.commentSchema);
 
 /*
 .########...######..########..##....##.########..########
@@ -93,8 +96,7 @@ module.exports.profilePage = function(req, res, next) {
           data.friendsCount     = Object.keys(data.friendsConfirmed).length - 1 || 0;
           data.messages         = profileMessages;
           console.log(searchedProfileResult.creationDate);
-          // console.log(data.joinedIn);
-          
+
       res.status(200).render("profile", {
         data: data
       });
@@ -105,41 +107,6 @@ module.exports.profilePage = function(req, res, next) {
       res.status(503);
       next();
     });
-
-    // // * FETCH REQUESTED PROFILE INFOS
-    // functions.getUserData(searchedProfile)
-    // .then(async function (returned) {
-
-    //   let searchedProfileResult;
-    //   searchedProfileResult = returned[0];
-    //   console.log(searchedProfileResult);
-
-    //   // * FETCH REQUESTER PROFILE INFOS
-    //   if (!data.isProfileOwner && data.role != 'v') {
-    //     let userProfileResult = await functions.getUserData(userName);
-    //     data.friendStatus = functions.checkIfSearchedProfileIsFriend(userProfileResult[0], searchedProfile);
-    //   }
-
-    //   let datePattern           = /(?:\bdigit-|\s|^)(\d{4})(?=[.?\s]|-digit\b|$)/g;
-    //       data.bio              = searchedProfileResult.bio || '';
-    //       data.joinedIn         = searchedProfileResult.creationDate.toString().match(datePattern)[0].trim() || '00/00/0000';
-    //       data.friendsConfirmed = searchedProfileResult.friends.confirmed || [];
-    //       data.friendsPending   = searchedProfileResult.friends.pending || [];
-    //       data.friendsRejected  = searchedProfileResult.friends.rejected || [];
-    //       data.friendsRequested = searchedProfileResult.friends.requested || [];
-    //       data.friendsCount     = Object.keys(data.friendsConfirmed).length - 1 || 0;
-
-    //   res.status(200).render("profile", {
-    //     data: data
-    //   });
-
-    // })
-    // .catch(function (err){
-    //   console.log('dis errer is : ' + err);
-    //   res.status(503);
-    //   next();
-    // });
-
 };
 
 /*
@@ -426,8 +393,35 @@ module.exports.post_comment = function (req, res, next) {
 
   console.log('launch function');
 
-  functions.pushPost(user, content);
+  functions.pushPost(user, content, res);
 
-  res.send(user);
+  // res.send(user);
 
+};
+
+/*
+.########..########.##.......########.########.########....########...#######...######..########
+.##.....##.##.......##.......##..........##....##..........##.....##.##.....##.##....##....##...
+.##.....##.##.......##.......##..........##....##..........##.....##.##.....##.##..........##...
+.##.....##.######...##.......######......##....######......########..##.....##..######.....##...
+.##.....##.##.......##.......##..........##....##..........##........##.....##.......##....##...
+.##.....##.##.......##.......##..........##....##..........##........##.....##.##....##....##...
+.########..########.########.########....##....########....##.........#######...######.....##...
+*/
+
+module.exports.delete_post = function (req, res, next) {
+
+  const { postId } = req.body;
+  const user = req.session.userName;
+
+  console.log('delete_post');
+
+  post
+  .findOneAndRemove(
+    { _id : postId },
+    function (err, result) {
+      if (err) throw err;
+      res.send('post delete');
+    }
+  );
 };

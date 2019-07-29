@@ -17,7 +17,7 @@ body
         .ui.segment
           .ui.card
             .image
-              img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
+              img(src='https://atlantis.nyc3.digitaloceanspaces.com/styled/1bec9ec74aac91e70b3ef91fee1fc0f9')
             .content
               .header #{data.searchedProfile}
               .meta
@@ -66,6 +66,7 @@ body
               #post-submit.ui.primary.button Submit
         //- POSTS
         #post-wrapper
+          include includes/delete-post-modal.pug
           each post in profileMessages
             .ui.segment(id='' + post._id)
               .ui.items
