@@ -30,9 +30,13 @@ router
   .route("/unblock-friend")
   .post(profileController.unblock_friend);
 
-  router
-  .route("/post-comment")
-  .post(profileController.post_comment);
+router
+.route("/post-comment")
+.post(profileController.post_comment);
+
+router
+.route("/delete-post")
+.post(profileController.delete_post);
 
 router
   .route("/:profile")

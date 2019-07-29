@@ -102,11 +102,11 @@ $( document ).ready(function() {
 .##.....##.########..########.....##.......##.....##.####.########.##....##.########.
 */
 
-  $('#add-friend').click( function () {
+  $('body').on( 'click', '#add-friend', function (e) {
 
-    $(this).addClass('loading');
-    let that = this
-    let userToFollow = $(this).parent().parent().parent().find(".header").text();
+    var that = e.currentTarget;
+    $(that).addClass('loading');
+    let userToFollow = $(that).parent().parent().parent().find(".header").text();
 
     $.ajax({
       type: "POST",
@@ -140,13 +140,11 @@ $( document ).ready(function() {
 ..#######..##....##.##........#######..########.########..#######...###..###.....##.......##.....##.####.########.##....##.########.
 */
 
-  $('#remove-friend-accepted').click( function () {
+  $('body').on( 'click', '#remove-friend-accepted', function (e) {
 
-    $(this).addClass('loading');
-    let that = this
-    let userToRemove = $(this).parent().parent().parent().find(".header").text();
-
-    console.log(userToRemove);
+    var that = e.currentTarget;
+    $(that).addClass('loading');
+    let userToRemove = $(that).parent().parent().parent().find(".header").text();
 
     $.ajax({
       type: "POST",
@@ -158,7 +156,6 @@ $( document ).ready(function() {
         userToRemove: userToRemove
       },
       success: function (response) {
-        console.log(response);
         $(that).removeClass('loading');
         $(that).parent().html(
           '<div class="ui fluid primary button" id="add-friend"><i class="user plus icon"></i>Demander en ami</div>'
@@ -181,13 +178,12 @@ $( document ).ready(function() {
 .##.....##.##........##........##.....##..#######.....###....########....##.......##.....##.####.########.##....##.########.
 */
 
-$('.approve-friend').click( function () {
+$('body').on( 'click', '.approve-friend', function (e) {
 
-  $(this).addClass('loading');
-  console.log('target');
+  var that = e.currentTarget;
+  $(that).addClass('loading');
 
-  let that = this;
-  let userToApprove = $(this).parent().parent().parent().find(".header").text();
+  let userToApprove = $(that).parent().parent().parent().find(".header").text();
 
   $.ajax({
     type: "POST",
@@ -199,7 +195,6 @@ $('.approve-friend').click( function () {
       userToApprove: userToApprove
     },
     success: function (response) {
-      console.log(response);
       $(that).removeClass('loading');
       $(that).parent().parent().parent().remove();
       $('#friends-cards').find(".ui.cards").append(
@@ -223,15 +218,12 @@ $('.approve-friend').click( function () {
 .##.....##.########.##.....##..#######.....###....########....##.......##.....##.####.########.##....##.########.
 */
 
-$('.remove-friend').click( function () {
+$('body').on( 'click', '.remove-friend', function (e) {
 
-  $(this).addClass('loading');
-  console.log('target');
+  var that = e.currentTarget;
+  $(that).addClass('loading');
 
-  let that = this;
-  let userToRemove = $(this).parent().parent().parent().find(".header").text();
-
-  console.log(userToRemove);
+  let userToRemove = $(that).parent().parent().parent().find(".header").text();
 
   $.ajax({
     type: "POST",
@@ -243,7 +235,6 @@ $('.remove-friend').click( function () {
       userToRemove: userToRemove
     },
     success: function (response) {
-      console.log(response);
       $(that).removeClass('loading');
       $(that).parent().parent().parent().remove();
     },
@@ -264,15 +255,12 @@ $('.remove-friend').click( function () {
 .########..########..######..########.####.##....##.########....##.......##.....##.####.########.##....##.########.
 */
 
-$('.decline-friend').click( function () {
+$('body').on( 'click', '.decline-friend', function (e) {
 
-  $(this).addClass('loading');
-  console.log('target');
+  var that = e.currentTarget;
+  $(that).addClass('loading');
 
-  let that = this;
-  let userToDecline = $(this).parent().parent().parent().find(".header").text();
-
-  console.log(userToDecline);
+  let userToDecline = $(that).parent().parent().parent().find(".header").text();
 
   $.ajax({
     type: "POST",
@@ -284,7 +272,6 @@ $('.decline-friend').click( function () {
       userToDecline: userToDecline
     },
     success: function (response) {
-      console.log(response);
       $(that).removeClass('loading');
       $(that).parent().parent().parent().remove();
     },
@@ -305,15 +292,12 @@ $('.decline-friend').click( function () {
 ..#######..##....##.########..########..#######...######..##....##....##.......##.....##.####.########.##....##.########.
 */
 
-$('.unblock-friend').click( function () {
+$('body').on( 'click', '.unblock-friend', function (e) {
 
-  $(this).addClass('loading');
-  console.log('target');
+  var that = e.currentTarget;
+  $(that).addClass('loading');
 
-  let that = this;
-  let userToUnblock = $(this).parent().parent().parent().find(".header").text();
-
-  console.log(userToUnblock);
+  let userToUnblock = $(that).parent().parent().parent().find(".header").text();
 
   $.ajax({
     type: "POST",
@@ -349,24 +333,23 @@ $('.unblock-friend').click( function () {
 .##.........#######...######.....##...
 */
 
-$("#user-post").click( function () {
+$("body").on( 'click', '#user-post', function (e) {
 
-  let text = $(this).text();
+  var that = e.currentTarget;
+  let text = $(that).text();
   let placeHolder = 'What do you want to share ?';
   if (text === placeHolder) {
-    let text = $(this).text('');
-    console.log(text);
+    let text = $(that).text('');
   }
 
 })
 
-$('#post-submit').click( function (e) {
+$('body').on( 'click', '#post-submit', function (e) {
 
-  let that = this;
+  var that = e.currentTarget;
   let placeHolder = 'What do you want to share ?';
   $(that).addClass('loading');
   let content = $('#user-post').val();
-  console.log(content);
 
   $.ajax({
     type: "POST",
@@ -380,10 +363,11 @@ $('#post-submit').click( function (e) {
     success: function (response) {
       console.log(response);
       $(that).removeClass('loading');
-      // $(that).parent().parent().parent().remove();
-      // $('#friends-cards').find(".ui.cards").append(
-      //   '<div class="card"><div class="content"><div class="header"><a href="/profile/' + userToUnblock + '">' + userToUnblock + '</a></div></div><div class="extra content"><div class="ui buttons"><div class="ui basic red button remove-friend">Remove</div></div></div>'
-      // );
+      var post = response[0];
+
+      var newPost = '<div class="ui segment" id="' + post._id + '"><div class="ui items"><div class="item"><div class="image"><img src="https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724"></div><div class="content"><a class="header" href="/profile/' + post.username + '">' + post.username + '</a><div class="meta"><span>' + post.creationDate + '</span></div><div class="description"><p>' + post.content + '</p></div><div class="extra"><button class="ui compact icon negative button right floated delete-post"><i class="trash icon"></i></button></div></div></div></div></div>';
+
+      $("#post-wrapper").prepend(newPost)
       $('#user-post').val(placeHolder);
     },
     failure: function (response) {
@@ -391,9 +375,52 @@ $('#post-submit').click( function (e) {
         $(that).removeClass('loading');
     }
   });
-
 });
 
+/*
+.########...#######...######..########....########..########.##.......########.########.########
+.##.....##.##.....##.##....##....##.......##.....##.##.......##.......##..........##....##......
+.##.....##.##.....##.##..........##.......##.....##.##.......##.......##..........##....##......
+.########..##.....##..######.....##.......##.....##.######...##.......######......##....######..
+.##........##.....##.......##....##.......##.....##.##.......##.......##..........##....##......
+.##........##.....##.##....##....##.......##.....##.##.......##.......##..........##....##......
+.##.........#######...######.....##.......########..########.########.########....##....########
+*/
+
+$('body').on( 'click', '.delete-post', function (e) {
+
+  var that = e.currentTarget;
+  $('.ui.basic.modal')
+  .modal('show')
+  ;
+
+  $('#delete-post-modal').click( function (e) {
+
+    $(that).addClass('loading');
+    let postId = $(that).parents('.ui.segment').attr('id');
+
+    $.ajax({
+      type: "POST",
+      xhrFields: {
+        withCredentials: true
+      },
+      url: "/profile/delete-post",
+      data : {
+        postId: postId
+      },
+      success: function (response) {
+        $(that).removeClass('loading');
+        if (response === 'post delete') {
+          $(that).parents('.ui.segment').remove();
+        }
+      },
+      failure: function (response) {
+          console.log("Unable to post comment.");
+          $(that).removeClass('loading');
+        }
+    });
+  });
+});
 
 /*
 ..######....#######.....########..#######.....########..########...#######..########.####.##.......########
