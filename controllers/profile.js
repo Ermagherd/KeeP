@@ -1,3 +1,4 @@
+
 const SESS_NAME = "sid";
 const functions = require('./functions');
 
@@ -88,6 +89,7 @@ const upload = multer({ storage });
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+
 /*
 .########..########...#######..########.####.##.......########.....######...########.########
 .##.....##.##.....##.##.....##.##........##..##.......##..........##....##..##..........##...
@@ -109,6 +111,7 @@ module.exports.profilePage = function(req, res, next) {
         data.role            = functions.checkRole(req);
         data.userName        = userName;
         data.searchedProfile = searchedProfile;
+        data.tokenWs         = userName;
 
     // * SEND DATA BASED ON USER PROFILE
     if (searchedProfile === userName) {

@@ -138,6 +138,86 @@ app.use(function(req, res, next) {
 });
 
 /*
+.####..#######.
+..##..##.....##
+..##..##.....##
+..##..##.....##
+..##..##.....##
+..##..##.....##
+.####..#######.
+*/
+
+var   io             = require('socket.io')(http);
+const accountSchemas = require('./models/account');
+const user           = mongoose.model("user", accountSchemas.userSchema);
+
+var chatUsers = {};
+var chatMessages = [];
+
+io.on('connection', function(socket){
+
+  let preTrim = socket.handshake.query.token
+  let token = preTrim.trim();
+  let socketId = socket.id;
+
+  if (chatUsers[socketId] == undefined) {
+
+    user
+    .find({username: token})
+    .then( function (result) {
+
+      let userInfos = {
+        username: token,
+        profilePic: result[0].profilePic
+      };
+
+      chatUsers[socketId] = userInfos;
+      console.log(chatUsers);
+
+    })
+    .catch( (e) => {
+      console.log(e);
+    }) ;
+
+  }
+
+  socket.emit('actual-conv', chatMessages);
+
+
+  socket.on('disconnect', function () {
+    console.log(`${socket.id} is disconnected`);
+    delete chatUsers[socket.id];
+  });
+
+  // * gestion de l'appel websocket;
+  socket.on('chat-message', function (data) {
+
+    console.log(`${chatUsers[socket.id]} a envoyé le message suivant : ${data.message}`);
+
+    var newMessage = {
+      user: chatUsers[socket.id].username,
+      profilePic: chatUsers[socket.id].profilePic,
+      message: data.message
+    }
+
+    if (chatMessages.length <= 200) {
+      chatMessages.push(newMessage);
+    } else {
+      chatMessages.shift();
+      chatMessages.push(newMessage);
+    }
+
+    io.emit('new-message', newMessage);
+
+  });
+
+});
+
+io.on('disconnect', function (socket){
+  console.log(`user ${socket.id} disconnected`);
+});
+
+/*
 .##.......####..######..########.########.##....##
 .##........##..##....##....##....##.......###...##
 .##........##..##..........##....##.......####..##

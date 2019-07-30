@@ -10,11 +10,12 @@ body
   - var friendsCount       = data.friendsCount || 0
   - var profileMessages    = data.messages || []
   - var profilePic         = data.profilePic || false
+  - var tokenWs            = data.tokenWs
   .ui.grid
     //- .stretched.row
     //- PROFILE INFOS
     .three.wide.column
-      .profilewrapper
+      .profilewrapper.ui.sticky.chat
         .ui.segment
           .ui.card
             .image
@@ -27,7 +28,7 @@ body
                       .field
                         label Choisissez une photo de profil
                         .ui.user-post.input
-                          input#upload-file-input(type='file', name='file-upload', placeholder='Upload Image')
+                          input#upload-file-input(type='file', name='file-upload', accept="image/x-png,image/gif,image/jpeg")
                       button#upload-file-button.ui.primary.button(type='submit') Upload
             .content
               .header #{data.searchedProfile}
@@ -40,7 +41,7 @@ body
                 | Afficher les amis
                 br
                 i.user.icon
-                span  #{friendsCount}   
+                span  #{friendsCount}
 
         //- FOLLOW BUTTON
         if !userIsProfileOwner && data.role != 'v'
@@ -64,13 +65,12 @@ body
               #add-friend.ui.fluid.primary.button
                 i.user.plus.icon
                 | Demander en ami
-
-        include includes/new-profile-pic-modal.pug
+        if userIsProfileOwner
+          include includes/new-profile-pic-modal.pug
 
     //- WALL
     .nine.wide.column.hidden
       #wallwrapper
-
         if userIsProfileOwner
           .ui.segment
             form.ui.form.user-post(action="/account/login" name='user-post-form')
@@ -81,7 +81,6 @@ body
               #post-submit.ui.primary.button Submit
         //- POSTS
         #post-wrapper
-          include includes/delete-post-modal.pug
           each post in profileMessages
             .ui.segment(id='' + post._id)
               .ui.items
@@ -105,6 +104,7 @@ body
         include includes/empty-post-modal.pug
           .ui.large.centered.inline.text.loader
             | Ajout de contenu...
+        include includes/delete-post-modal.pug
 
       #friendswrapper.hiddenthing
         .ui.segment#friends-cards
@@ -166,8 +166,8 @@ body
 
     //- FEED
     .four.wide.column
-      if userIsProfileOwner
-        .feedwrapper
+      .feedwrapper.ui.sticky.chat
+        if userIsProfileOwner
           .ui.segment
             .ui.vertical.fluid.menu
               a.teal.item#feed-amis
@@ -184,7 +184,28 @@ body
                 .ui.transparent.icon.input
                   input(type='text', placeholder='Search mail...')
                   i.search.icon
-          //- .ui.segment
-          //-   | 2
-          //- .ui.segment
-          //-   | 3
+        .ui.segment
+          .ui.feed
+            .event
+              //- .label
+                //- img(src='/images/avatar/small/elliot.jpg')
+              //- .content
+              //-   .summary
+              //-     a.user
+              //-       | Elliot Fu
+                  //- .date
+                  //-   | 1 Hour Ago
+                //- .meta
+                //-   p texte du message qui peut être long en fait il faut le dire
+                  //- a.like
+                  //-   i.like.icon
+                  //-   |  4 Likes
+          form.ui.form.chat-form(autocomplete="off")
+            .field
+              .ui.chat.input
+                input#chat-input(type="text" name='user-post' autocomplete="off")
+            #chat-submit.ui.primary.button Chat
+
+
+  p#token(style="display: none") #{tokenWs} 
+  script(src='/js/ws.js')
