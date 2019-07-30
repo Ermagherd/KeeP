@@ -394,7 +394,9 @@ $('body').on( 'click', '#post-submit', function (e) {
   var that = e.currentTarget;
   let placeHolder = 'Quoi de neuf ?';
   $(that).addClass('loading');
-  let content = $('#user-post').val();
+  let message = $('#user-post').val();
+  var pattern = /(<([^>]+)>)/ig;
+  let content = message.replace(pattern, "");
 
   if (content.length <= 0) {
 

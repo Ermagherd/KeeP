@@ -7,6 +7,8 @@ window.addEventListener('DOMContentLoaded', function() {
   $('#chat-submit').on('click', function () {
 
     var message = $('#chat-input').val();
+    var pattern = /(<([^>]+)>)/ig;
+    message = message.replace(pattern, "");
 
     socket.emit('chat-message', {message: message});
 

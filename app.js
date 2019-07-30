@@ -194,10 +194,14 @@ io.on('connection', function(socket){
 
     console.log(`${chatUsers[socket.id]} a envoyé le message suivant : ${data.message}`);
 
+    var pattern = /(<([^>]+)>)/ig;
+    var message = data.message
+    message = message.replace(pattern, "");
+
     var newMessage = {
       user: chatUsers[socket.id].username,
       profilePic: chatUsers[socket.id].profilePic,
-      message: data.message
+      message: message
     }
 
     if (chatMessages.length <= 200) {
