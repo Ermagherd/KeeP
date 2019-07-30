@@ -46,9 +46,4 @@ router
   .route("/upload-file")
   .post(profileController.uploadSingle, profileController.upload_file);
 
-router
-  .route("/:filename")
-  .get(profileController.get_image);
-
-
 module.exports = router;

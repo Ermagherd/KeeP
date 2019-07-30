@@ -6,13 +6,13 @@
     - var userName = data.userName
     if (userRole == 'v')
       a.item(href='/account/login')
-        | Login
+        | Connexion
     if (userRole == 'v')
       a.item(href='/account/signup')
-        | Register
+        | S'enregistrer
     if (userRole == 'a')
       a.item(href='/dashboard')
-        | Admin Panel
+        | Admin
     unless (userName == false)
       a.item(href='/profile/' + userName)
         span.username
@@ -21,8 +21,8 @@
     if (userRole == 'u' || userRole == 'a')
       a.item.role(href='/account/logout')
         i.power.off.icon
-        span logout
+        span Déconnexion
     select#user-search.ui.fluid.search.dropdown.item(name='user-search')
-      option(value='') Search a profile
+      option(value='') Chercher un profil
     a.item(href='/about')
-      | About Keep
+      | A propos de Keep

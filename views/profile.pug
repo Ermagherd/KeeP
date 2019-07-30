@@ -19,7 +19,7 @@ body
           .ui.card
             .image
               if profilePic != '' && profilePic
-                img(src='/profile/' + profilePic alt="profilePic")
+                img#profile-pic(src='/upload/' + profilePic alt="profilePic")
               else
                 if userIsProfileOwner
                   .ui.segment
@@ -32,13 +32,15 @@ body
             .content
               .header #{data.searchedProfile}
               .meta
-                span.date Joined in #{data.joinedIn}
+                span.date Membre depuis #{data.joinedIn}
               .description
                 | #{data.bio}
             .extra.content
               a.display-friends
+                | Afficher les amis
+                br
                 i.user.icon
-                | #{friendsCount} / Afficher les amis
+                span  #{friendsCount}   
 
         //- FOLLOW BUTTON
         if !userIsProfileOwner && data.role != 'v'
@@ -51,7 +53,7 @@ body
             .ui.segment
               #add-friend-requested.ui.fluid.disabled.secondary.button
                 i.paper.plane.icon
-                | Demande en attente
+                | Demandes en attente
           else if friendStatus == 'unaccepted'
             .ui.segment
               #add-friend-unaccepted.ui.fluid.disabled.negative.button
@@ -73,7 +75,7 @@ body
               .field
                 .ui.user-post.input
                   textarea#user-post(name='user-post', row="1", cols="33")
-                    | What do you want to share ?
+                    | Quoi de neuf ?
               #post-submit.ui.primary.button Submit
         //- POSTS
         #post-wrapper
@@ -82,8 +84,9 @@ body
             .ui.segment(id='' + post._id)
               .ui.items
                 .item
-                  .image
-                    img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724' alt="profile_pic")
+                  .image#post-profile-pic
+                    if profilePic != '' && profilePic
+                      img(src='/upload/' + profilePic alt="profilePic")
                   .content
                     a.header(href='/profile/' + post.username) #{post.username}
                     .meta
@@ -99,7 +102,7 @@ body
 
         include includes/empty-post-modal.pug
           .ui.large.centered.inline.text.loader
-            | Adding more content...
+            | Ajout de contenu...
 
       #friendswrapper.hiddenthing
         .ui.segment#friends-cards
@@ -109,6 +112,7 @@ body
               .card
                 .content
                   //- img.right.floated.mini.ui.image(src='/images/avatar/large/elliot.jpg')
+                  //- img.right.floated.mini.ui.image(src='/upload/' + card alt="friend pic")
                   .header
                     a(href='/profile/' + card) #{card}
                 if userIsProfileOwner
@@ -127,12 +131,12 @@ body
                       a(href='/profile/' + card) #{card}
                     if userIsProfileOwner
                       .description
-                        | #{card} requested permission to be your friend
+                        | #{card} vous a demandé en ami
                   if userIsProfileOwner
                     .extra.content
                       .ui.two.buttons
-                        .ui.primary.button.approve-friend Approve
-                        .ui.black.button.decline-friend Block
+                        .ui.primary.button.approve-friend Approuver
+                        .ui.black.button.decline-friend Bloquer
         if userIsProfileOwner
           .ui.segment#requested-friends-cards
             h3 Vos demandes d'amis
@@ -164,16 +168,17 @@ body
         .feedwrapper
           .ui.segment
             .ui.vertical.fluid.menu
-              a.teal.item
-                | Inbox
-                .ui.teal.left.pointing.label 1
-              a.item
+              a.teal.item#feed-amis
+                | Demandes d'amis
+                - var friendsPendingcount = friendsPending.length
+                .ui.teal.left.pointing.label #{friendsPendingcount}
+              //- a.item
                 | Spam
                 .ui.label 51
-              a.item
+              //- a.item
                 | Updates
                 .ui.label 1
-              .item
+              //- .item
                 .ui.transparent.icon.input
                   input(type='text', placeholder='Search mail...')
                   i.search.icon

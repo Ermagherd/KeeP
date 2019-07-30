@@ -77,48 +77,6 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 /*
-..######...########.########....####.##.....##....###.....######...########
-.##....##..##..........##........##..###...###...##.##...##....##..##......
-.##........##..........##........##..####.####..##...##..##........##......
-.##...####.######......##........##..##.###.##.##.....##.##...####.######..
-.##....##..##..........##........##..##.....##.#########.##....##..##......
-.##....##..##..........##........##..##.....##.##.....##.##....##..##......
-..######...########....##.......####.##.....##.##.....##..######...########
-*/
-
-module.exports.get_image = function(req, res, next) {
-
-  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-
-    // check if file
-    if (!file || file.lenght === 0) {
-      return res.status(404).json({
-        err: 'No file exists'
-      });
-    }
-
-    if(file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-
-      // readstream
-      const readstream = gfs.createReadStream(file.filename);
-
-      res.status(200);
-      readstream.pipe(res).on('finish', function () {
-
-      })
-
-    } else {
-      res.status(404).json({
-        err: 'not an image'
-      });
-    }
-
-  });
-
-
-};
-
-/*
 .########...######..########..##....##.########..########
 .##.....##.##....##.##.....##..##..##..##.....##....##...
 .##.....##.##.......##.....##...####...##.....##....##...
@@ -480,7 +438,7 @@ module.exports.unblock_friend = function (req, res, next) {
 */
 
 module.exports.validatePost = [
-  check("content", "Your entry is not valid")
+  check("content", "Entrée invalide")
     .not()
     .isEmpty()
     .trim()
@@ -568,7 +526,7 @@ module.exports.upload_file = function (req, res, next) {
     fieldUpdate,
     (err, result) => {
       if (err) res.send ('unable to update profile pic');
-      // res.send(filename);
+      res.redirect('/profile/' + username);
     });
 
 };

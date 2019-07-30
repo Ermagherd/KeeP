@@ -1,5 +1,12 @@
 include includes/header.pug
 body
   include includes/nav.pug
-
-  h1 Dashboard Page
+  
+  .ui.grid
+    .stretched.row
+      .three.wide.column
+      .ten.wide.column
+        #warningMessage
+        if (typeof message !== 'undefined')
+          p= message
+        h1 Dashboard Page

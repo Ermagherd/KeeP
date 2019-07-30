@@ -9,29 +9,29 @@ body
         #warningMessage
         if (typeof message !== 'undefined')
           p= message
-        h1 Sign Up
+        h1 Créer un compte
         form.ui.form.login.segment(method='POST' action="/account/signup" name='signup-form')
-          p Your password must be at leat 8 characters long with a uppercase, a lowercase, a number and a special character.
+          p Votre mot de passe doit contenir au minimum 8 caractères et posséder une majuscule, une minuscule, un nombre et un caractère spécial.
           .three.fields
             .field
-              label First Name
-              input(placeholder='First Name' name='firstName' type='text' value='')
+              label Prénom
+              input(placeholder='Prénom' name='firstName' type='text' value='')
             .field
-              label Last Name
-              input(placeholder='Last Name' name='lastName' type='text' value='')
+              label Nom
+              input(placeholder='Nom' name='lastName' type='text' value='')
             .field
-              label Username
-              input(placeholder='Username' name='username' type='text' value='')
+              label Pseudo
+              input(placeholder='Pseudo' name='username' type='text' value='')
           .three.fields
             .field
               label Email
               input(placeholder='Email' type='email' name='email' value='')
             .field
-              label Password
-              input(placeholder='Password' type='password' name='password' value='')
+              label Mot de passe
+              input(placeholder='Mot de passe' type='password' name='password' value='')
             .field
-              label Confirm Password
-              input(placeholder='Confirm Password' type='password' name='passwordConfirmation' value='')
+              label Confirmez votre mot de passe
+              input(placeholder='Confirmez votre mot de passe' type='password' name='passwordConfirmation' value='')
           .ui.primary.submit.button Submit
           .ui.error.message
       .three.wide.column
