@@ -31,16 +31,19 @@ router
   .post(profileController.unblock_friend);
 
 router
-.route("/post-comment")
-.post(profileController.post_comment);
+  .route("/post-comment")
+  .post(profileController.validatePost, profileController.post_comment);
 
 router
-.route("/delete-post")
-.post(profileController.delete_post);
+  .route("/delete-post")
+  .post(profileController.delete_post);
 
 router
   .route("/:profile")
   .get(profileController.profilePage);
 
+router
+  .route("/upload-file")
+  .post(profileController.uploadSingle, profileController.upload_file);
 
 module.exports = router;

@@ -1,0 +1,19 @@
+.ui.basic.modal#new-profile-pic
+  .ui.icon.header
+    i.user.icon
+    | Vous pouvez modifier ici votre image de profil
+  .actions
+    form.ui.form.user-post(action="/profile/upload-file" method="POST" name='image-upload' enctype="multipart/form-data")
+      .field
+        label Choisissez une photo de profil
+        .ui.user-post.input
+          input#upload-file-input(type='file', name='file-upload', placeholder='Upload Image')
+      button#upload-file-button.ui.primary.button(type='submit') Upload
+
+    //- .ui.red.basic.cancel.inverted.button
+    //-   i.remove.icon
+    //-   |       Oui
+    //- #delete-post-modal.ui.green.ok.inverted.button
+    //-   i.checkmark.icon
+    //-   |       Non
+

@@ -82,15 +82,17 @@ module.exports.loginPage = function(req, res, next) {
 .##.......##.....##.##....##...##..##...###.....##..##...###......##.##...##.....##.##........##..##.....##.##.....##....##....##.....##.##....##.
 .########..#######...######...####.##....##....####.##....##.......###....##.....##.########.####.########..##.....##....##.....#######..##.....##
 
-*/module.exports.validateLogin = [
-  check("username", "Username didn't match requirements")
+*/
+
+module.exports.validateLogin = [
+  check("username", "Votre pseudo est invalide. Veuillez réessayer.")
     .not()
     .isEmpty()
     .matches(/^[A-zÀ-ÖØ-öø-ÿ0-9]+$/, "i")
     .isLength({ min: 3, max: 20 })
     .trim()
     .escape(),
-  check("password", "Password didn't match requirements")
+  check("password", "Votre mot de passe est invalide. Veuillez réessayer.")
     .not()
     .isEmpty()
     .isLength({ min: 8, max: 50 })
@@ -126,9 +128,9 @@ module.exports.userLogin = function(req, res, next) {
     });
     req.flash(
       "wrong login",
-      "Something went wrong with your login (" +
+      "Une erreur s'est produite (" +
         errorsMessages +
-        "). Please try again."
+        "). Veuillez réessayer."
     );
     return res.redirect("/account/login");
   }
@@ -147,11 +149,11 @@ module.exports.userLogin = function(req, res, next) {
           req.session.userName = result.username;
           return res.redirect("/");
         } else {
-          req.flash("wrong login", "Invalid Password. Please try again");
+          req.flash("wrong login", "Votre mot de passe est invalide. Veuillez réessayer.");
           return res.redirect("/account/login");
         }
       } else {
-        req.flash("wrong login", "User doesn't exist. Please try again");
+        req.flash("wrong login", "L'utilisateur n'existe pas. Veuillez réessayer.");
         return res.redirect("/account/login");
       }
     });
@@ -194,33 +196,33 @@ module.exports.signupPage = function(req, res, next) {
 */
 
 module.exports.validateUserCreation = [
-  check("firstName", "FirstName didn't match requirements")
+  check("firstName", "Votre prénom est invalide. Veuillez réessayer.")
     .not()
     .isEmpty()
     .matches(/^[A-zÀ-ÖØ-öø-ÿ]+$/, "i")
     .isLength({ min: 1, max: 30 })
     .trim()
     .escape(),
-  check("lastName", "FirstName didn't match requirements")
+  check("lastName", "Votre nom est invalide. Veuillez réessayer.")
     .not()
     .isEmpty()
     .matches(/^[A-zÀ-ÖØ-öø-ÿ]+$/, "i")
     .isLength({ min: 1, max: 30 })
     .trim()
     .escape(),
-  check("username", "Username didn't match requirements")
+  check("username", "Votre pseudo est invalide. Veuillez réessayer.")
     .not()
     .isEmpty()
     .matches(/^[A-zÀ-ÖØ-öø-ÿ0-9]+$/, "i")
     .isLength({ min: 3, max: 20 })
     .trim()
     .escape(),
-  check("email", "Email didn't match requirements")
+  check("email", "Votre email est invalide. Veuillez réessayer.")
     .isEmail()
     .normalizeEmail()
     .trim()
     .escape(),
-  check("password", "Password didn't match requirements")
+  check("password", "Votre mot de passe est invalide. Veuillez réessayer.")
     .not()
     .isEmpty()
     .isLength({ min: 8, max: 50 })
@@ -228,9 +230,7 @@ module.exports.validateUserCreation = [
     .trim()
     .escape(),
   check(
-    "passwordConfirmation",
-    "Password Confirmation didn't match requirements"
-  )
+    "passwordConfirmation", "Votre confirmation de mot de passe est invalide. Veuillez réessayer.")
     .not()
     .isEmpty()
     .isLength({ min: 8, max: 50 })
@@ -267,9 +267,9 @@ module.exports.createUser = function(req, res, next) {
     });
     req.flash(
       "wrong signup",
-      "Something went wrong with your account creation (" +
+      "Une erreu s'est produite (" +
         errorsMessages +
-        "). Please try again."
+        "). Veuillez réessayer."
     );
     return res.redirect("/account/signup");
   }
@@ -308,9 +308,7 @@ module.exports.createUser = function(req, res, next) {
                   req.session.role     = result.role;
                   req.session.userName = result.username;
 
-                  // !!! NEW HERE
-                  // !!! NEW HERE
-                  // !!! NEW HERE
+                  // * CREATE POSTER PROFILE
 
                   poster
                     .findOne( { username: username } )
@@ -334,11 +332,6 @@ module.exports.createUser = function(req, res, next) {
                       }
                     });
 
-                  // !!! NEW HERE
-                  // !!! NEW HERE
-                  // !!! NEW HERE
-
-                  // return res.redirect("/");
                 })
                 .catch(function(err) {
                   console.log(err);
@@ -348,17 +341,17 @@ module.exports.createUser = function(req, res, next) {
         } else {
           let flashError = "";
           if (result.username === username) {
-            flashError = "Username is already used.";
+            flashError = "Ce pseudo est déjà utilisé.";
           }
           if (result.email === email) {
-            flashError = "Email adress is already used.";
+            flashError = "Cet email est déjà utilisé.";
           }
           if (result.username === username && result.email === email) {
-            flashError = "Username and email adress are already used.";
+            flashError = "Ce pseudo et cet email sont déjà utilisés.";
           }
           req.flash(
             "wrong signup",
-            flashError + " Please try again with another one."
+            flashError + " Veuillez réessayer."
           );
           return res.redirect("/account/signup");
         }

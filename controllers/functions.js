@@ -82,17 +82,10 @@ module.exports.getUserData = async function(searchedProfile) {
   let userInfos = {
     data: data,
     messages: messages
-  }
+  };
   return userInfos;
 
 };
-
-// module.exports.getUserData = async function(searchedProfile) {
-
-//   var data = await user.find({username:searchedProfile});
-//   return data;
-
-// };
 
 /*
 .########..##.....##.##.......##..........########.########..####.########.##....##.########.
@@ -142,79 +135,23 @@ module.exports.pushUpdateFriendArray = function(searchedProfile, pattern) {
 };
 
 /*
-.########..##.....##..######..##.....##....########...#######...######..########
-.##.....##.##.....##.##....##.##.....##....##.....##.##.....##.##....##....##...
-.##.....##.##.....##.##.......##.....##....##.....##.##.....##.##..........##...
-.########..##.....##..######..#########....########..##.....##..######.....##...
-.##........##.....##.......##.##.....##....##........##.....##.......##....##...
-.##........##.....##.##....##.##.....##....##........##.....##.##....##....##...
-.##.........#######...######..##.....##....##.........#######...######.....##...
+.########..########..########.########.....###....########..########....########...#######...######..########..######.
+.##.....##.##.....##.##.......##.....##...##.##...##.....##.##..........##.....##.##.....##.##....##....##....##....##
+.##.....##.##.....##.##.......##.....##..##...##..##.....##.##..........##.....##.##.....##.##..........##....##......
+.########..########..######...########..##.....##.########..######......########..##.....##..######.....##.....######.
+.##........##...##...##.......##........#########.##...##...##..........##........##.....##.......##....##..........##
+.##........##....##..##.......##........##.....##.##....##..##..........##........##.....##.##....##....##....##....##
+.##........##.....##.########.##........##.....##.##.....##.########....##.........#######...######.....##.....######.
 */
-
-// module.exports.pushPost = function(username, content, res) {
-
-//   let postInstance = new post({
-//     username: username,
-//     content: content
-//   });
-
-//   postInstance
-//   .save()
-//   .then(result => {
-//     console.log('then de postInstance')
-//     console.log(result)
-//     res.send(result);
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
-
-// };
-
-/*
-..######...#######..########..########....########...#######...######..########..######.
-.##....##.##.....##.##.....##....##.......##.....##.##.....##.##....##....##....##....##
-.##.......##.....##.##.....##....##.......##.....##.##.....##.##..........##....##......
-..######..##.....##.########.....##.......########..##.....##..######.....##.....######.
-.......##.##.....##.##...##......##.......##........##.....##.......##....##..........##
-.##....##.##.....##.##....##.....##.......##........##.....##.##....##....##....##....##
-..######...#######..##.....##....##.......##.........#######...######.....##.....######.
-*/
-
-// module.exports.preparePosts = function(postsList) {
-
-//   let   messages    = postsList;
-//   console.log(messages);
-
-//   messages.forEach((element, index) => {
-
-//     console.log(element.creationDate);
-//     let newDateFormat = element.creationDate.toString().slice(4,15) || 'date unknown';
-//     // console.log(newDateFormat);
-
-//     let newElement = {
-//       username    : element.username,
-//       content     : element.content,
-//       creationDate: newDateFormat,
-//       comments    : element.comments,
-//       _id         : element._id
-//     };
-
-//     messages[index] = newElement;
-//   });
-
-//   return messages;
-// };
-
 
 function preparePosts (postsList) {
 
   let   messages    = postsList;
-  console.log(messages);
+  // console.log(messages);
 
   messages.forEach((element, index) => {
 
-    console.log(element.creationDate);
+    // console.log(element.creationDate);
     let newDateFormat = element.creationDate.toString().slice(4,15) || 'date unknown';
     // console.log(newDateFormat);
 
@@ -234,6 +171,15 @@ function preparePosts (postsList) {
 
 module.exports.preparePosts = preparePosts;
 
+/*
+.########..##.....##..######..##.....##....########...#######...######..########
+.##.....##.##.....##.##....##.##.....##....##.....##.##.....##.##....##....##...
+.##.....##.##.....##.##.......##.....##....##.....##.##.....##.##..........##...
+.########..##.....##..######..#########....########..##.....##..######.....##...
+.##........##.....##.......##.##.....##....##........##.....##.......##....##...
+.##........##.....##.##....##.##.....##....##........##.....##.##....##....##...
+.##.........#######...######..##.....##....##.........#######...######.....##...
+*/
 
 module.exports.pushPost = function(username, content, res) {
 
@@ -245,8 +191,8 @@ module.exports.pushPost = function(username, content, res) {
   postInstance
   .save()
   .then(result => {
-    console.log('then de postInstance')
-    console.log(result)
+    // console.log('then de postInstance')
+    // console.log(result)
     let messageArray = [];
     messageArray.push(result);
     let messagePrep = preparePosts(messageArray);
