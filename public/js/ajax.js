@@ -3,6 +3,23 @@
 $( document ).ready(function() {
 
 /*
+..######..########.####..######..##....##.##....##
+.##....##....##.....##..##....##.##...##...##..##.
+.##..........##.....##..##.......##..##.....####..
+..######.....##.....##..##.......#####.......##...
+.......##....##.....##..##.......##..##......##...
+.##....##....##.....##..##....##.##...##.....##...
+..######.....##....####..######..##....##....##...
+*/
+
+  $('.ui.sticky.chat')
+    .sticky({
+      offset       : 50,
+      bottomOffset : 50,
+    })
+  ;
+
+/*
 .##.....##..#######..########.....###....##......
 .###...###.##.....##.##.....##...##.##...##......
 .####.####.##.....##.##.....##..##...##..##......
@@ -365,7 +382,7 @@ $("body").on( 'click', '#user-post', function (e) {
 
   var that = e.currentTarget;
   let text = $(that).text();
-  let placeHolder = 'What do you want to share ?';
+  let placeHolder = 'Quoi de neuf ?';
   if (text === placeHolder) {
     let text = $(that).text('');
   }
@@ -375,9 +392,11 @@ $("body").on( 'click', '#user-post', function (e) {
 $('body').on( 'click', '#post-submit', function (e) {
 
   var that = e.currentTarget;
-  let placeHolder = 'What do you want to share ?';
+  let placeHolder = 'Quoi de neuf ?';
   $(that).addClass('loading');
-  let content = $('#user-post').val();
+  let message = $('#user-post').val();
+  var pattern = /(<([^>]+)>)/ig;
+  let content = message.replace(pattern, "");
 
   if (content.length <= 0) {
 

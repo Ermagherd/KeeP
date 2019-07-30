@@ -7,13 +7,5 @@
       .field
         label Choisissez une photo de profil
         .ui.user-post.input
-          input#upload-file-input(type='file', name='file-upload', placeholder='Upload Image')
+          input#upload-file-input(type='file', name='file-upload', accept="image/x-png,image/gif,image/jpeg")
       button#upload-file-button.ui.primary.button(type='submit') Upload
-
-    //- .ui.red.basic.cancel.inverted.button
-    //-   i.remove.icon
-    //-   |       Oui
-    //- #delete-post-modal.ui.green.ok.inverted.button
-    //-   i.checkmark.icon
-    //-   |       Non
-
