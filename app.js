@@ -105,50 +105,6 @@ app.use(
 );
 
 /*
-.##.....##.##.....##.##.......########.########.########.
-.###...###.##.....##.##..........##....##.......##.....##
-.####.####.##.....##.##..........##....##.......##.....##
-.##.###.##.##.....##.##..........##....######...########.
-.##.....##.##.....##.##..........##....##.......##...##..
-.##.....##.##.....##.##..........##....##.......##....##.
-.##.....##..#######..########....##....########.##.....##
-*/
-
-// gfs Init
-
-// var conn = mongoose.createConnection(DB_CONN);
-
-// conn.once('open', () => {
-//   var gfs = Grid(conn.db, mongoose.mongo);
-//   gfs.collection('uploads');
-// })
-
-// // Storage Engine
-
-// const storage = new GridFsStorage({
-//   url: DB_CONN,
-//   file: (req, file) => {
-//     return new Promise((resolve, reject) => {
-//       crypto.randomBytes(16, (err, buf) => {
-//         if (err) {
-//           return reject(err);
-//         }
-//         const filename = buf.toString('hex') + path.extname(file.originalname);
-//         const fileInfo = {
-//           filename: filename,
-//           bucketName: 'uploads'
-//         };
-//         resolve(fileInfo);
-//       });
-//     });
-//   }
-// });
-// const upload = multer({ storage });
-
-// app.post('/upload', upload.single('file-upload'), (req, res) => {
-//   res.json({ file: req.file });
-// })
-/*
 .########...#######..##.....##.########.########..######.
 .##.....##.##.....##.##.....##....##....##.......##....##
 .##.....##.##.....##.##.....##....##....##.......##......

@@ -82,7 +82,7 @@ module.exports.getUserData = async function(searchedProfile) {
   let userInfos = {
     data: data,
     messages: messages
-  }
+  };
   return userInfos;
 
 };
@@ -147,11 +147,11 @@ module.exports.pushUpdateFriendArray = function(searchedProfile, pattern) {
 function preparePosts (postsList) {
 
   let   messages    = postsList;
-  console.log(messages);
+  // console.log(messages);
 
   messages.forEach((element, index) => {
 
-    console.log(element.creationDate);
+    // console.log(element.creationDate);
     let newDateFormat = element.creationDate.toString().slice(4,15) || 'date unknown';
     // console.log(newDateFormat);
 
@@ -191,8 +191,8 @@ module.exports.pushPost = function(username, content, res) {
   postInstance
   .save()
   .then(result => {
-    console.log('then de postInstance')
-    console.log(result)
+    // console.log('then de postInstance')
+    // console.log(result)
     let messageArray = [];
     messageArray.push(result);
     let messagePrep = preparePosts(messageArray);

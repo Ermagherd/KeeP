@@ -9,6 +9,7 @@ body
   - var friendsRequested   = data.friendsRequested || []
   - var friendsCount       = data.friendsCount || 0
   - var profileMessages    = data.messages || []
+  - var profilePic         = data.profilePic || false
   .ui.grid
     //- .stretched.row
     //- PROFILE INFOS
@@ -17,7 +18,17 @@ body
         .ui.segment
           .ui.card
             .image
-              img(src='https://atlantis.nyc3.digitaloceanspaces.com/styled/1bec9ec74aac91e70b3ef91fee1fc0f9')
+              if profilePic != '' && profilePic
+                img(src='/profile/' + profilePic alt="profilePic")
+              else
+                if userIsProfileOwner
+                  .ui.segment
+                    form.ui.form.user-post(action="/profile/upload-file" method="POST" name='image-upload' enctype="multipart/form-data")
+                      .field
+                        label Choisissez une photo de profil
+                        .ui.user-post.input
+                          input#upload-file-input(type='file', name='file-upload', placeholder='Upload Image')
+                      button#upload-file-button.ui.primary.button(type='submit') Upload
             .content
               .header #{data.searchedProfile}
               .meta
@@ -56,18 +67,6 @@ body
     .nine.wide.column.hidden
       #wallwrapper
 
-        //- UPLOAD IMAGE FORM
-        if userIsProfileOwner
-          .ui.segment
-            form.ui.form.user-post(action="/profile/upload-file" method="POST" name='image-upload' enctype="multipart/form-data")
-              .field
-                .ui.user-post.input
-                  input#upload-file-input(type='file', name='file-upload', placeholder='Upload Image')
-              button#upload-file-button.ui.primary.button(type='submit') Upload
-
-
-        //- POST FORM
-        include includes/empty-post-modal.pug
         if userIsProfileOwner
           .ui.segment
             form.ui.form.user-post(action="/account/login" name='user-post-form')
@@ -84,7 +83,7 @@ body
               .ui.items
                 .item
                   .image
-                    img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724')
+                    img(src='https://cdn.shopify.com/s/files/1/1679/2319/products/Thermal_Top.jpg?v=1548365724' alt="profile_pic")
                   .content
                     a.header(href='/profile/' + post.username) #{post.username}
                     .meta
@@ -98,6 +97,7 @@ body
                         //- button.ui.compact.icon.primary.button.right.floated.edit-post
                           i.edit.icon
 
+        include includes/empty-post-modal.pug
           .ui.large.centered.inline.text.loader
             | Adding more content...
 

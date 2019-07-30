@@ -20,6 +20,7 @@ var userSchema = new Schema({
   role        : { type: String, default: "" },
   gender      : { type: String, default: "" },
   bio         : { type: String, default: "" },
+  profilePic  : { type: String, default: "" },
   friends     :
   {
     confirmed :

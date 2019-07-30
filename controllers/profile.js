@@ -77,6 +77,48 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 /*
+..######...########.########....####.##.....##....###.....######...########
+.##....##..##..........##........##..###...###...##.##...##....##..##......
+.##........##..........##........##..####.####..##...##..##........##......
+.##...####.######......##........##..##.###.##.##.....##.##...####.######..
+.##....##..##..........##........##..##.....##.#########.##....##..##......
+.##....##..##..........##........##..##.....##.##.....##.##....##..##......
+..######...########....##.......####.##.....##.##.....##..######...########
+*/
+
+module.exports.get_image = function(req, res, next) {
+
+  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+
+    // check if file
+    if (!file || file.lenght === 0) {
+      return res.status(404).json({
+        err: 'No file exists'
+      });
+    }
+
+    if(file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+
+      // readstream
+      const readstream = gfs.createReadStream(file.filename);
+
+      res.status(200);
+      readstream.pipe(res).on('finish', function () {
+
+      })
+
+    } else {
+      res.status(404).json({
+        err: 'not an image'
+      });
+    }
+
+  });
+
+
+};
+
+/*
 .########...######..########..##....##.########..########
 .##.....##.##....##.##.....##..##..##..##.....##....##...
 .##.....##.##.......##.....##...####...##.....##....##...
@@ -134,6 +176,8 @@ module.exports.profilePage = function(req, res, next) {
         data.friendStatus = functions.checkIfSearchedProfileIsFriend(userProfileResult.data[0], searchedProfile);
       }
 
+      console.log('searchedProfileResult is : ' + typeof searchedProfileResult);
+
       let datePattern           = /(\d{4})/g;
           data.bio              = searchedProfileResult.bio || '';
           data.joinedIn         = searchedProfileResult.creationDate.toString().match(datePattern)[0].trim() || '00-00-0000';
@@ -141,9 +185,10 @@ module.exports.profilePage = function(req, res, next) {
           data.friendsPending   = searchedProfileResult.friends.pending || [];
           data.friendsRejected  = searchedProfileResult.friends.rejected || [];
           data.friendsRequested = searchedProfileResult.friends.requested || [];
+          data.profilePic       = searchedProfileResult.profilePic || [];
           data.friendsCount     = Object.keys(data.friendsConfirmed).length - 1 || 0;
           data.messages         = profileMessages;
-          console.log(searchedProfileResult.creationDate);
+          // console.log(searchedProfileResult.creationDate);
 
       res.status(200).render("profile", {
         data: data
@@ -512,7 +557,18 @@ module.exports.uploadSingle = [
 
 module.exports.upload_file = function (req, res, next) {
 
-  // res.json({ file: req.file });
-  res.redirect('/profile/' + req.session.userName);
+  let username = req.session.userName;
+  let filename = req.file.filename;
+
+  let query       = { username: username };
+  let fieldUpdate = { profilePic: filename };
+  user
+  .findOneAndUpdate(
+    query,
+    fieldUpdate,
+    (err, result) => {
+      if (err) res.send ('unable to update profile pic');
+      // res.send(filename);
+    });
 
 };
