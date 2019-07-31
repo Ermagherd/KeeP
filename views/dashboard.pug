@@ -10,3 +10,23 @@ body
         if (typeof message !== 'undefined')
           p= message
         h1 Dashboard Page
+        .ui.segment
+          h3 Reset Password :
+          form.ui.form.reset-password.segment(method='POST' action="/account/reset-password" name='reset-login')
+            p Entrez le pseudo du membre et son nouveau mot de passe
+            .two.fields
+              .field
+                label Pseudo
+                input(type='text' name='username' placeholder='Pseudo')
+              .field
+                label Nouveau mot de passe
+                input(type='password' name='password' placeholder='Nouveau mot de passe')
+            .ui.primary.submit.button#reset-password-button Envoyer
+            .ui.error.message
+        .ui.segment
+          h2
+            | Users in chat
+          span.users-in-chat
+            | 0
+      .three.wide.column
+  script(src='/js/ws.js')

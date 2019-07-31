@@ -153,8 +153,10 @@ const user           = mongoose.model("user", accountSchemas.userSchema);
 
 var chatUsers = {};
 var chatMessages = [];
+var connectedMembers = 0;
 
 io.on('connection', function(socket){
+
 
   let preTrim = socket.handshake.query.token
   let token = preTrim.trim();
@@ -174,6 +176,9 @@ io.on('connection', function(socket){
       chatUsers[socketId] = userInfos;
       console.log(chatUsers);
 
+      connectedMembers = Object.keys(chatUsers).length;
+      io.emit('connected-users', {connected: connectedMembers});
+
     })
     .catch( (e) => {
       console.log(e);
@@ -183,10 +188,21 @@ io.on('connection', function(socket){
 
   socket.emit('actual-conv', chatMessages);
 
+  
+  socket.on('need-data', function () {
+    connectedMembers = Object.keys(chatUsers).length;
+    socket.emit('connected-users', {connected: connectedMembers});
+  })
+
+
 
   socket.on('disconnect', function () {
+
     console.log(`${socket.id} is disconnected`);
     delete chatUsers[socket.id];
+    connectedMembers = Object.keys(chatUsers).length;
+    io.emit('connected-users', {connected: connectedMembers});
+
   });
 
   // * gestion de l'appel websocket;

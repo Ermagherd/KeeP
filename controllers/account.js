@@ -361,6 +361,90 @@ module.exports.createUser = function(req, res, next) {
   checkIfUserExist();
 };
 
+module.exports.validateResetPassword = [
+  check("username", "Votre pseudo est invalide. Veuillez réessayer.")
+    .not()
+    .isEmpty()
+    .matches(/^[A-zÀ-ÖØ-öø-ÿ0-9]+$/, "i")
+    .isLength({ min: 3, max: 20 })
+    .trim()
+    .escape(),
+  check("password", "Votre mot de passe est invalide. Veuillez réessayer.")
+    .not()
+    .isEmpty()
+    .isLength({ min: 8, max: 50 })
+    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{7,}$/, "i")
+    .trim()
+    .escape()
+];
+
+
+/*
+.########..########..######..########.########....########.....###.....######...######..##......##..#######..########..########.
+.##.....##.##.......##....##.##..........##.......##.....##...##.##...##....##.##....##.##..##..##.##.....##.##.....##.##.....##
+.##.....##.##.......##.......##..........##.......##.....##..##...##..##.......##.......##..##..##.##.....##.##.....##.##.....##
+.########..######....######..######......##.......########..##.....##..######...######..##..##..##.##.....##.########..##.....##
+.##...##...##.............##.##..........##.......##........#########.......##.......##.##..##..##.##.....##.##...##...##.....##
+.##....##..##.......##....##.##..........##.......##........##.....##.##....##.##....##.##..##..##.##.....##.##....##..##.....##
+.##.....##.########..######..########....##.......##........##.....##..######...######...###..###...#######..##.....##.########.
+*/
+
+module.exports.reset_password = function(req, res, next) {
+
+  console.log("reset password (POST) :");
+  const { username, password } = req.body;
+
+  var role = functions.checkRole(req);
+
+  if (role === 'a') {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      let errorsMessages = "";
+      errors.array().forEach(element => {
+        errorsMessages += element.msg + ". ";
+      });
+      req.flash(
+        "wrong login",
+        "Une erreur s'est produite (" +
+          errorsMessages +
+          "). Veuillez réessayer."
+      );
+      return res.redirect("/dashboard");
+    }
+
+    function resetPassword () {
+
+      // * HASH PASSWORD AND SAVE PROFILE
+      bcrypt.genSalt(saltRounds, function(err, salt) {
+        bcrypt.hash(password, salt, function(err, hash) {
+
+          let query       = { username: username };
+          let fieldUpdate = { password: hash };
+
+          user
+          .findOneAndUpdate(
+            query,
+            fieldUpdate,
+            (err, result) => {
+              if (err) res.send ('unable to update profile pic');
+              res.redirect('/dashboard');
+            });
+        });
+      });
+    }
+
+    resetPassword ();
+
+  } else {
+
+    res.redirect('/dashboard');
+
+  }
+
+
+};
+
 /*
 .##........#######...######....#######..##.....##.########.....######...########.########
 .##.......##.....##.##....##..##.....##.##.....##....##.......##....##..##..........##...

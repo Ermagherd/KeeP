@@ -13,6 +13,10 @@ router
   .post(accountController.validateUserCreation, accountController.createUser);
 
 router
+  .route("/reset-password")
+  .post(accountController.validateResetPassword, accountController.reset_password);
+
+router
   .route("/logout")
   .get(accountController.logout);
 
